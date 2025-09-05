@@ -3,32 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LABL</title>
+    <title>LABL Launcher</title>
     <style>
+        /*
+         * LABL Launcher Styles
+         * Updated for a soft, warm, and inviting brown color scheme.
+         */
+
         /* General Reset & Variables */
         :root {
-            --bikuist-dark-purple: #1f1d36;
-            --bikuist-mid-purple: #2f2e51;
-            --bikuist-light-purple: #4c3b7a;
-            --bikuist-gradient-start: #7e57c2;
-            --bikuist-gradient-end: #3f51b5;
-            --bikuist-text-light: #ffffff;
-            --bikuist-text-mid: #e0e0e0;
-            --bikuist-border-light: rgba(255, 255, 255, 0.2);
-            --bikuist-shadow-dark: rgba(0, 0, 0, 0.7);
-
-            /* Launcher Specific Overrides */
-            --container-bg-color: rgba(31, 29, 54, 0.8);
-            --input-bg-color: rgba(0, 0, 0, 0.2);
-            --input-focus-glow: rgba(126, 87, 194, 0.8);
-            --button-text-color: #ffffff;
-            --button-shadow-color: rgba(63, 81, 181, 0.6);
-        
-            /* Quick Link Button Colors */
-            --quick-link-bg: rgba(74, 0, 224, 0.5);
-            --quick-link-hover-bg: rgba(142, 45, 226, 0.7);
-            --quick-link-text: #ffffff;
-            --quick-link-shadow: rgba(0, 0, 0, 0.4);
+            --labl-bg-light-brown: #EADECB;
+            --labl-container-dark-brown: rgba(89, 69, 69, 0.85);
+            --labl-text-dark: #261A1A;
+            --labl-text-light: #F0EAD2;
+            --labl-border-soft: rgba(0, 0, 0, 0.15);
+            --labl-gradient-start: #8B5C3C;
+            --labl-gradient-end: #B98A6F;
+            --labl-shadow-soft: rgba(0, 0, 0, 0.4);
+            --labl-input-bg: rgba(0, 0, 0, 0.05);
+            --labl-input-focus-glow: rgba(185, 138, 111, 0.6);
+            --labl-button-text-color: #ffffff;
+            --labl-button-shadow-color: rgba(0, 0, 0, 0.2);
         }
 
         *, *::before, *::after {
@@ -43,23 +38,31 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: var(--bikuist-text-light);
-            background: linear-gradient(135deg, var(--bikuist-dark-purple) 0%, var(--bikuist-mid-purple) 100%);
+            color: var(--labl-text-dark);
+            background: linear-gradient(135deg, #d2b48c 0%, #b58862 100%);
             padding: 2rem 0;
             overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        /* Enhances the look of selected text */
+        ::selection {
+            background: var(--labl-gradient-start);
+            color: #fff;
+            text-shadow: none;
         }
 
         /* Main Container */
         .container {
             text-align: center;
             padding: 3rem 4rem;
-            background-color: var(--container-bg-color);
+            background-color: var(--labl-container-dark-brown);
             border-radius: 15px;
-            box-shadow: 0 10px 30px var(--bikuist-shadow-dark);
-            transition: transform 0.3s ease;
+            box-shadow: 0 10px 30px var(--labl-shadow-soft);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             max-width: 650px;
             width: 90%;
-            border: 1px solid var(--bikuist-border-light);
+            border: 1px solid var(--labl-border-soft);
             backdrop-filter: blur(8px);
             display: flex;
             flex-direction: column;
@@ -68,20 +71,23 @@
 
         .container:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
         }
 
+        /* Heading with a subtle text shadow */
         h1 {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 2rem;
-            color: var(--bikuist-text-light);
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            color: var(--labl-text-light);
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
 
+        /* Form controls */
         label {
             display: block;
             font-size: 1.1rem;
-            color: var(--bikuist-text-mid);
+            color: var(--labl-text-light);
             font-weight: 500;
             margin-bottom: 0.8rem;
         }
@@ -89,11 +95,11 @@
         /* Input Field */
         input[type="text"] {
             padding: 15px 20px;
-            border: 1px solid var(--bikuist-border-light);
+            border: 1px solid var(--labl-border-soft);
             border-radius: 8px;
             width: 100%;
-            background-color: var(--input-bg-color);
-            color: var(--bikuist-text-light);
+            background-color: var(--labl-input-bg);
+            color: var(--labl-text-light);
             font-size: 1rem;
             transition: border-color 0.3s, box-shadow 0.3s;
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -101,8 +107,8 @@
 
         input[type="text"]:focus {
             outline: none;
-            border-color: var(--bikuist-gradient-start);
-            box-shadow: 0 0 0 3px var(--input-focus-glow), inset 0 2px 5px rgba(0, 0, 0, 0.2);
+            border-color: var(--labl-gradient-start);
+            box-shadow: 0 0 0 3px var(--labl-input-focus-glow), inset 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .main-controls {
@@ -115,8 +121,8 @@
         /* --- Main Launch Button Styling --- */
         #launchButton {
             padding: 16px 35px;
-            background: linear-gradient(90deg, var(--bikuist-gradient-start) 0%, var(--bikuist-gradient-end) 100%);
-            color: var(--button-text-color);
+            background: linear-gradient(90deg, var(--labl-gradient-start) 0%, var(--labl-gradient-end) 100%);
+            color: var(--labl-button-text-color);
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -124,34 +130,35 @@
             font-weight: 600;
             font-size: 1.1rem;
             letter-spacing: 0.05em;
-            box-shadow: 0 6px 20px var(--button-shadow-color);
+            box-shadow: 0 6px 20px var(--labl-button-shadow-color);
             text-transform: uppercase;
         }
 
         #launchButton:hover {
-            background: linear-gradient(90deg, var(--bikuist-gradient-end) 0%, var(--bikuist-gradient-start) 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px var(--button-shadow-color);
+            background: linear-gradient(90deg, var(--labl-gradient-end) 0%, var(--labl-gradient-start) 100%);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px var(--labl-button-shadow-color);
+            animation: pulse 1.5s infinite;
         }
 
         #launchButton:active {
             transform: translateY(0);
-            box-shadow: 0 4px 15px var(--button-shadow-color);
+            box-shadow: 0 4px 15px var(--labl-button-shadow-color);
         }
-        
+
         /* --- Quick Links Section --- */
         .quick-links-section {
             display: flex;
             flex-direction: column;
             gap: 1rem;
             padding-top: 1.5rem;
-            border-top: 1px solid var(--bikuist-border-light);
+            border-top: 1px solid var(--labl-border-soft);
         }
 
         .quick-links-title {
             font-size: 1.3rem;
             font-weight: 600;
-            color: var(--bikuist-text-light);
+            color: var(--labl-text-light);
             margin-bottom: 0.5rem;
         }
 
@@ -165,9 +172,9 @@
         .quick-link-button {
             width: 100%;
             padding: 12px 15px;
-            background-color: var(--input-bg-color);
-            color: var(--bikuist-text-mid);
-            border: 1px solid var(--bikuist-border-light);
+            background-color: var(--labl-input-bg);
+            color: var(--labl-text-light);
+            border: 1px solid var(--labl-border-soft);
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.9rem;
@@ -178,8 +185,8 @@
         }
 
         .quick-link-button:hover {
-            background-color: var(--bikuist-mid-purple);
-            color: var(--bikuist-text-light);
+            background-color: rgba(89, 69, 69, 0.8);
+            color: var(--labl-text-light);
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
@@ -188,7 +195,24 @@
             transform: translateY(0);
             box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
         }
+
         /* --- End Quick Links Section --- */
+
+        /* Keyframe Animations */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 6px 20px var(--labl-button-shadow-color);
+            }
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 8px 30px var(--labl-button-shadow-color);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 6px 20px var(--labl-button-shadow-color);
+            }
+        }
 
         /* Responsive adjustments */
         @media (max-width: 600px) {
@@ -233,7 +257,7 @@
             <div class="quick-links-grid">
                 <button class="quick-link-button" onclick="launchURL('https://qyutxwivpd.thesqueakandoilchart.com/')">VaporV3 1</button>
                 <button class="quick-link-button" onclick="launchURL('https://classroom.google.com.alcrb.ru')">VaporV3 2</button>
-                
+
                 <button class="quick-link-button" onclick="launchURL('https://higuysbikuist.vercel.app')">Bikuist Hub</button>
 
                 <button class="quick-link-button" onclick="launchURL('https://fheuwifuhewi.coolscience.cfd/')">Truffed 1</button>
@@ -254,11 +278,27 @@
         const launchButton = document.getElementById('launchButton');
 
         function launchURL(url) {
+            // Replaced alert() with a custom message box to be compatible with Canvas.
+            function showMessage(msg) {
+                const messageBox = document.createElement('div');
+                messageBox.style.cssText = `
+                    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                    z-index: 1000; background-color: rgba(89, 69, 69, 0.9); padding: 20px;
+                    border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+                    text-align: center; color: white;
+                `;
+                messageBox.innerHTML = `
+                    <p>${msg}</p>
+                    <button onclick="this.parentNode.remove()" style="margin-top: 10px; padding: 5px 10px; border: none; border-radius: 5px; background-color: #8B5C3C; color: white; cursor: pointer;">OK</button>
+                `;
+                document.body.appendChild(messageBox);
+            }
+
             if (!url) {
-                alert('Please enter a URL or select a quick link.');
+                showMessage('Please enter a URL or select a quick link.');
                 return;
             }
-            
+
             const newTab = window.open('about:blank', '_blank');
             if (newTab) {
                 newTab.document.write(`
@@ -288,7 +328,7 @@
                 `);
                 newTab.document.close();
             } else {
-                alert('Please allow pop-ups for this site to launch new tabs.');
+                showMessage('Please allow pop-ups for this site to launch new tabs.');
             }
         }
 
@@ -308,3 +348,4 @@
     </script>
 </body>
 </html>
+
