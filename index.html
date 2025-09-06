@@ -7,28 +7,26 @@
     <style>
         /* General Reset & Variables */
         :root {
-            --bikuist-dark-purple: #1f1d36;
-            --bikuist-mid-purple: #2f2e51;
-            --bikuist-light-purple: #4c3b7a;
-            --bikuist-gradient-start: #7e57c2;
-            --bikuist-gradient-end: #3f51b5;
-            --bikuist-text-light: #ffffff;
-            --bikuist-text-mid: #e0e0e0;
-            --bikuist-border-light: rgba(255, 255, 255, 0.2);
-            --bikuist-shadow-dark: rgba(0, 0, 0, 0.7);
-
-            /* Launcher Specific Overrides */
-            --container-bg-color: rgba(31, 29, 54, 0.8);
-            --input-bg-color: rgba(0, 0, 0, 0.2);
-            --input-focus-glow: rgba(126, 87, 194, 0.8);
-            --button-text-color: #ffffff;
-            --button-shadow-color: rgba(63, 81, 181, 0.6);
-        
-            /* Quick Link Button Colors */
-            --quick-link-bg: rgba(74, 0, 224, 0.5);
-            --quick-link-hover-bg: rgba(142, 45, 226, 0.7);
-            --quick-link-text: #ffffff;
-            --quick-link-shadow: rgba(0, 0, 0, 0.4);
+            /* New Color Palette based on the cat's fur */
+            --cat-dark-brown: #33241c;
+            --cat-tan: #73594b;
+            --cat-cream: #c4a991;
+            --cat-orange: #d97d5d;
+            --cat-white: #f5f5f5;
+            
+            /* UI Elements using the new palette */
+            --container-bg-color: rgba(51, 36, 28, 0.9);
+            --text-color: var(--cat-white);
+            --input-bg-color: rgba(255, 255, 255, 0.1);
+            --input-border-color: rgba(255, 255, 255, 0.2);
+            --input-focus-glow: var(--cat-orange);
+            --button-primary-bg: var(--cat-orange);
+            --button-primary-hover: #b8654b;
+            --button-secondary-bg: var(--cat-tan);
+            --button-secondary-hover: #634d40;
+            --button-text-color: var(--text-color);
+            --button-shadow-color: rgba(0, 0, 0, 0.4);
+            --border-light: rgba(255, 255, 255, 0.2);
         }
 
         *, *::before, *::after {
@@ -43,8 +41,8 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: var(--bikuist-text-light);
-            background: linear-gradient(135deg, var(--bikuist-dark-purple) 0%, var(--bikuist-mid-purple) 100%);
+            color: var(--text-color);
+            background-color: var(--cat-dark-brown);
             padding: 2rem 0;
             overflow-x: hidden;
         }
@@ -55,11 +53,11 @@
             padding: 3rem 4rem;
             background-color: var(--container-bg-color);
             border-radius: 15px;
-            box-shadow: 0 10px 30px var(--bikuist-shadow-dark);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
             transition: transform 0.3s ease;
             max-width: 650px;
             width: 90%;
-            border: 1px solid var(--bikuist-border-light);
+            border: 1px solid var(--border-light);
             backdrop-filter: blur(8px);
             display: flex;
             flex-direction: column;
@@ -74,14 +72,14 @@
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 2rem;
-            color: var(--bikuist-text-light);
+            color: var(--cat-white);
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
         }
 
         label {
             display: block;
             font-size: 1.1rem;
-            color: var(--bikuist-text-mid);
+            color: var(--cat-cream);
             font-weight: 500;
             margin-bottom: 0.8rem;
         }
@@ -89,11 +87,11 @@
         /* Input Field */
         input[type="text"] {
             padding: 15px 20px;
-            border: 1px solid var(--bikuist-border-light);
+            border: 1px solid var(--input-border-color);
             border-radius: 8px;
             width: 100%;
             background-color: var(--input-bg-color);
-            color: var(--bikuist-text-light);
+            color: var(--cat-white);
             font-size: 1rem;
             transition: border-color 0.3s, box-shadow 0.3s;
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -101,8 +99,8 @@
 
         input[type="text"]:focus {
             outline: none;
-            border-color: var(--bikuist-gradient-start);
-            box-shadow: 0 0 0 3px var(--input-focus-glow), inset 0 2px 5px rgba(0, 0, 0, 0.2);
+            border-color: var(--input-focus-glow);
+            box-shadow: 0 0 0 3px rgba(217, 125, 93, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .main-controls {
@@ -112,15 +110,15 @@
             margin-bottom: 1.5rem;
         }
 
-        /* --- Main Launch Button Styling --- */
+        /* Main Launch Button Styling */
         #launchButton {
             padding: 16px 35px;
-            background: linear-gradient(90deg, var(--bikuist-gradient-start) 0%, var(--bikuist-gradient-end) 100%);
+            background-color: var(--button-primary-bg);
             color: var(--button-text-color);
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s, box-shadow 0.3s;
+            transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.3s;
             font-weight: 600;
             font-size: 1.1rem;
             letter-spacing: 0.05em;
@@ -129,7 +127,7 @@
         }
 
         #launchButton:hover {
-            background: linear-gradient(90deg, var(--bikuist-gradient-end) 0%, var(--bikuist-gradient-start) 100%);
+            background-color: var(--button-primary-hover);
             transform: translateY(-3px);
             box-shadow: 0 8px 25px var(--button-shadow-color);
         }
@@ -139,19 +137,19 @@
             box-shadow: 0 4px 15px var(--button-shadow-color);
         }
         
-        /* --- Quick Links Section --- */
+        /* Quick Links Section */
         .quick-links-section {
             display: flex;
             flex-direction: column;
             gap: 1rem;
             padding-top: 1.5rem;
-            border-top: 1px solid var(--bikuist-border-light);
+            border-top: 1px solid var(--border-light);
         }
 
         .quick-links-title {
             font-size: 1.3rem;
             font-weight: 600;
-            color: var(--bikuist-text-light);
+            color: var(--cat-cream);
             margin-bottom: 0.5rem;
         }
 
@@ -165,9 +163,9 @@
         .quick-link-button {
             width: 100%;
             padding: 12px 15px;
-            background-color: var(--input-bg-color);
-            color: var(--bikuist-text-mid);
-            border: 1px solid var(--bikuist-border-light);
+            background-color: var(--button-secondary-bg);
+            color: var(--button-text-color);
+            border: 1px solid var(--border-light);
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.9rem;
@@ -178,8 +176,8 @@
         }
 
         .quick-link-button:hover {
-            background-color: var(--bikuist-mid-purple);
-            color: var(--bikuist-text-light);
+            background-color: var(--button-secondary-hover);
+            color: var(--cat-white);
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
@@ -188,7 +186,7 @@
             transform: translateY(0);
             box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
         }
-        /* --- End Quick Links Section --- */
+        /* End Quick Links Section */
 
         /* Responsive adjustments */
         @media (max-width: 600px) {
@@ -237,19 +235,15 @@
                 <button class="quick-link-button" onclick="launchURL('https://drive.google.fpr.net/')">RammerHead 4</button>
                 <button class="quick-link-button" onclick="launchURL('https://sleep.phonk.toilets.tk/')">RammerHead 5</button>
                 <button class="quick-link-button" onclick="launchURL('https://tc44.smelly.cc/')">RammerHead 6</button>
-
                 <button class="quick-link-button" onclick="launchURL('https://qyutxwivpd.thesqueakandoilchart.com/')">VaporV3 1</button>
                 <button class="quick-link-button" onclick="launchURL('https://classroom.google.com.alcrb.ru')">VaporV3 2</button>
-                
                 <button class="quick-link-button" onclick="launchURL('https://higuysbikuist.vercel.app')">Bikuist Hub</button>
-
                 <button class="quick-link-button" onclick="launchURL('https://fheuwifuhewi.coolscience.cfd/')">Truffed 1</button>
                 <button class="quick-link-button" onclick="launchURL('https://otherthings.coolscience.cfd/')">Truffed 2</button>
                 <button class="quick-link-button" onclick="launchURL('https://jicwnew.coolscience.cfd/')">Truffed 3</button>
                 <button class="quick-link-button" onclick="launchURL('https://fejijfsk.coolscience.cfd/')">Truffed 4</button>
                 <button class="quick-link-button" onclick="launchURL('https://schoology.com.de/')">Truffed 5</button>
                 <button class="quick-link-button" onclick="launchURL('https://npm.lat/')">Truffed 6</button>
-
                 <button class="quick-link-button" onclick="launchURL('https://isuckdih.w3spaces.com/')">Doge Unb 1</button>
                 <button class="quick-link-button" onclick="launchURL('https://jakolbeesaidthenwordagain.vercel.app/')">Doge Unb 2</button>
             </div>
@@ -268,11 +262,12 @@
             
             const newTab = window.open('about:blank', '_blank');
             if (newTab) {
+                newTab.document.title = 'secret :3';
                 newTab.document.write(`
                     <!DOCTYPE html>
                     <html lang="en">
                     <head>
-                        <title>${url}</title>
+                        <title>secret :3</title>
                         <meta charset="UTF-8">
                         <meta name="viewport" content="width=device-width, initial-scale=1.0">
                         <style>
