@@ -217,7 +217,7 @@
         }
 
         /* Popup overlay styles */
-        .popup-overlay {
+        #popup-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -234,19 +234,19 @@
             z-index: 1000;
         }
 
-        .popup-overlay h2 {
+        #popup-overlay h2 {
             font-size: 2rem;
             color: #333;
             margin-bottom: 20px;
         }
 
-        .popup-overlay p {
+        #popup-overlay p {
             font-size: 1.2rem;
             color: #555;
             margin-bottom: 30px;
         }
 
-        .popup-overlay button {
+        #popup-overlay button {
             padding: 12px 24px;
             font-size: 1rem;
             background-color: #007BFF;
@@ -257,13 +257,18 @@
             transition: background-color 0.3s;
         }
 
-        .popup-overlay button:hover {
+        #popup-overlay button:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <main class="container" id="main-content">
+    <div id="popup-overlay" style="display: none;">
+        <h2>Pop-ups Blocked</h2>
+        <p>Please allow pop-ups for this site to continue.</p>
+        <button onclick="window.location.reload()">Reload Page</button>
+    </div>
+    <main class="container" id="main-content" style="display: none;">
         <h1>Lumi's ab launcher</h1>
         <div class="main-controls">
             <label for="urlInput">Enter URL:</label>
@@ -360,22 +365,15 @@
         });
 
         window.addEventListener('load', () => {
-            const popupCheck = window.open('', '_blank', 'width=1,height=1,left=0,top=0,menubar=no,toolbar=no,location=no,status=no,resizeable=no');
+            // Check for a pop-up blocker by trying to open a new window
+            const popupCheck = window.open('about:blank', '_blank');
             if (popupCheck) {
-                // If the popup was opened, close it and continue
+                // Pop-ups were allowed, close the temporary window and show the main content
                 popupCheck.close();
                 document.getElementById('main-content').style.display = 'flex';
             } else {
-                // If the popup was blocked, show the message
-                const popupOverlay = document.createElement('div');
-                popupOverlay.classList.add('popup-overlay');
-                popupOverlay.innerHTML = `
-                    <h2>Pop-ups Blocked</h2>
-                    <p>Please allow pop-ups for this site to continue.</p>
-                    <button onclick="location.reload()">Reload Page</button>
-                `;
-                document.body.appendChild(popupOverlay);
-                document.getElementById('main-content').style.display = 'none';
+                // Pop-ups were blocked, show the overlay message
+                document.getElementById('popup-overlay').style.display = 'flex';
             }
         });
     </script>
