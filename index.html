@@ -19,27 +19,27 @@
             --tab-hover: #5d4e41;
             --border-color: rgba(255, 255, 255, 0.1);
             --shadow-color: rgba(0, 0, 0, 0.4);
+            --ab-button-color: #a89a8c;
+            --ab-button-hover: #e8e4e1;
         }
 
         body {
-            background-color: transparent; /* Main body is transparent to show particle-bg */
+            background-color: transparent;
             margin: 0;
             padding: 0;
             overflow: hidden;
         }
 
-        /* Particle effect background */
         #particle-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--bg-color); /* Fallback for no JS / particles */
+            background-color: var(--bg-color);
             z-index: -1;
         }
 
-        /* Main Popup Container */
         .chat-container {
             position: fixed;
             top: 50%;
@@ -61,7 +61,6 @@
             transition: transform 0.2s ease-in-out;
         }
 
-        /* Drag Handle/Header */
         .chat-header {
             background: var(--header-bg);
             padding: 10px 15px;
@@ -75,12 +74,12 @@
             height: 50px;
         }
 
-        /* Tab Navigation */
         .tab-container {
             display: flex;
             gap: 2px;
         }
-
+        
+        /* New Tab Button Styling */
         .tab-button {
             background-color: var(--tab-color);
             border: none;
@@ -92,6 +91,8 @@
             transition: background-color 0.2s ease, color 0.2s ease;
             outline: none;
             border-radius: 6px 6px 0 0;
+            display: flex; /* Makes the button a flex container */
+            align-items: center;
         }
 
         .tab-button:hover {
@@ -106,28 +107,42 @@
             z-index: 1;
         }
 
-        /* Cloak Button for each tab */
-        .ab-cloak-button {
-            background-color: #6b5a4a;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 8px 16px;
-            color: var(--secondary-text-color);
+        /* Styling for the nested AB Cloak button */
+        .tab-button .ab-cloak-button {
+            margin-left: 8px; /* Space between text and button */
+            padding: 4px 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--ab-button-color);
+            color: var(--header-bg);
+            font-size: 12px;
+            font-weight: bold;
             transition: background-color 0.2s ease, color 0.2s ease;
-            outline: none;
-            border-radius: 6px 6px 0 0;
-            margin-left: 5px; /* Space between tab and cloak button */
+        }
+        
+        .tab-button .ab-cloak-button:hover {
+            background-color: var(--ab-button-hover);
+            color: var(--header-bg);
+        }
+        
+        .tab-button.active .ab-cloak-button {
+            background-color: var(--ab-button-hover);
+            color: var(--header-bg);
         }
 
-        .ab-cloak-button:hover {
-            background-color: var(--button-hover);
+        .tab-button.active .ab-cloak-button:hover {
+            background-color: #d4a076;
             color: white;
         }
+        
+        /* Close Button and Reset Button */
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
 
-        /* Close Button */
-        .close-button {
+        .close-button, .reset-button {
             background: transparent;
             color: var(--text-color);
             border: none;
@@ -141,15 +156,25 @@
             align-items: center;
             transition: background-color 0.2s ease, color 0.2s ease;
             padding: 0;
-            margin-right: 5px;
         }
 
         .close-button:hover {
             background: #e74c3c;
             color: white;
         }
+        
+        .reset-button {
+            font-size: 16px;
+            width: auto;
+            border-radius: 8px;
+            padding: 0 10px;
+        }
+        
+        .reset-button:hover {
+            background: var(--button-hover);
+            color: white;
+        }
 
-        /* Iframe and Content Panels */
         .content-iframe {
             flex-grow: 1;
             border: none;
@@ -421,32 +446,38 @@
             // Google Tab & Button
             const googleTab = document.createElement("button");
             googleTab.classList.add("tab-button");
-            googleTab.innerText = "Google";
-            tabContainer.appendChild(googleTab);
+            const googleTabSpan = document.createElement("span");
+            googleTabSpan.innerText = "Google";
+            googleTab.appendChild(googleTabSpan);
             const googleCloakBtn = document.createElement("button");
             googleCloakBtn.classList.add("ab-cloak-button");
-            googleCloakBtn.innerText = "AB Cloak";
-            tabContainer.appendChild(googleCloakBtn);
+            googleCloakBtn.innerText = "AB";
+            googleTab.appendChild(googleCloakBtn);
+            tabContainer.appendChild(googleTab);
 
             // AI Tab & Button
             const chatTab = document.createElement("button");
             chatTab.classList.add("tab-button");
-            chatTab.innerText = "AI";
-            tabContainer.appendChild(chatTab);
+            const chatTabSpan = document.createElement("span");
+            chatTabSpan.innerText = "AI";
+            chatTab.appendChild(chatTabSpan);
             const chatCloakBtn = document.createElement("button");
             chatCloakBtn.classList.add("ab-cloak-button");
-            chatCloakBtn.innerText = "AB Cloak";
-            tabContainer.appendChild(chatCloakBtn);
+            chatCloakBtn.innerText = "AB";
+            chatTab.appendChild(chatCloakBtn);
+            tabContainer.appendChild(chatTab);
             
             // Proxy Tab & Button
             const proxyTab = document.createElement("button");
             proxyTab.classList.add("tab-button");
-            proxyTab.innerText = "Proxy";
-            tabContainer.appendChild(proxyTab);
+            const proxyTabSpan = document.createElement("span");
+            proxyTabSpan.innerText = "Proxy";
+            proxyTab.appendChild(proxyTabSpan);
             const proxyCloakBtn = document.createElement("button");
             proxyCloakBtn.classList.add("ab-cloak-button");
-            proxyCloakBtn.innerText = "AB Cloak";
-            tabContainer.appendChild(proxyCloakBtn);
+            proxyCloakBtn.innerText = "AB";
+            proxyTab.appendChild(proxyCloakBtn);
+            tabContainer.appendChild(proxyTab);
 
             // Tools Tab
             const toolsTab = document.createElement("button");
@@ -460,10 +491,21 @@
             abCloakTab.innerText = "AB Cloak";
             tabContainer.appendChild(abCloakTab);
 
+            // Control Buttons (Reset and Close)
+            const controlButtons = document.createElement("div");
+            controlButtons.classList.add("control-buttons");
+            chatHeader.appendChild(controlButtons);
+
+            const resetButton = document.createElement("button");
+            resetButton.classList.add("reset-button");
+            resetButton.innerText = "Reset";
+            controlButtons.appendChild(resetButton);
+
             const closeButton = document.createElement("button");
             closeButton.classList.add("close-button");
             closeButton.innerText = "×";
-            chatHeader.appendChild(closeButton);
+            controlButtons.appendChild(closeButton);
+
 
             // Main content iframe
             const iframe = document.createElement("iframe");
@@ -483,7 +525,7 @@
                     <li>- Navigate between tabs for Google, AI, a web proxy, and a custom launcher.</li>
                     <li>- The entire popup is draggable and resizable for convenience.</li>
                     <li>- Use the "Tools" tab to enable right-clicking or execute custom JavaScript code.</li>
-                    <li>- Use the "AB Cloak" button next to any iframe tab to launch that page in a new, cloaked about:blank window.</li>
+                    <li>- Use the "AB" button within a tab to launch that page in a new, cloaked about:blank window.</li>
                     <li>- Press Ctrl + E to hide or show the popup quickly.</li>
                 </ul>
             `;
@@ -541,7 +583,6 @@
             // Tab functionality
             function setActiveTab(activeTab) {
                 const tabs = [aboutTab, googleTab, chatTab, proxyTab, toolsTab, abCloakTab];
-                const cloakButtons = [googleCloakBtn, chatCloakBtn, proxyCloakBtn];
                 
                 tabs.forEach(tab => {
                     tab.classList.remove("active");
@@ -551,8 +592,7 @@
                 const containers = [iframe, aboutContainer, toolsContainer, abCloakContainer];
                 containers.forEach(container => container.style.display = "none");
                 
-                cloakButtons.forEach(btn => btn.style.display = "none"); // Hide all cloak buttons initially
-
+                // Show the appropriate container
                 if (activeTab === aboutTab) {
                     aboutContainer.style.display = "flex";
                 } else if (activeTab === toolsTab) {
@@ -561,14 +601,6 @@
                     abCloakContainer.style.display = "flex";
                 } else {
                     iframe.style.display = "block";
-                    // Show cloak button for the active iframe tab
-                    if (activeTab === googleTab) {
-                        googleCloakBtn.style.display = "block";
-                    } else if (activeTab === chatTab) {
-                        chatCloakBtn.style.display = "block";
-                    } else if (activeTab === proxyTab) {
-                        proxyCloakBtn.style.display = "block";
-                    }
                 }
             }
 
@@ -576,27 +608,33 @@
                 setActiveTab(aboutTab);
             });
 
-            googleTab.addEventListener("click", () => {
-                iframe.src = "https://www.google.com/webhp?igu=1";
-                setActiveTab(googleTab);
+            googleTab.addEventListener("click", (e) => {
+                if (!e.target.classList.contains('ab-cloak-button')) {
+                    iframe.src = "https://www.google.com/webhp?igu=1";
+                    setActiveTab(googleTab);
+                }
             });
 
             googleCloakBtn.addEventListener("click", () => {
                 launchURL("https://www.google.com/webhp?igu=1", true);
             });
 
-            chatTab.addEventListener("click", () => {
-                iframe.src = "https://ai-bot-peach-seven.vercel.app/";
-                setActiveTab(chatTab);
+            chatTab.addEventListener("click", (e) => {
+                if (!e.target.classList.contains('ab-cloak-button')) {
+                    iframe.src = "https://ai-bot-peach-seven.vercel.app/";
+                    setActiveTab(chatTab);
+                }
             });
 
             chatCloakBtn.addEventListener("click", () => {
                 launchURL("https://ai-bot-peach-seven.vercel.app/", true);
             });
             
-            proxyTab.addEventListener("click", () => {
-                iframe.src = "https://rammerhead.is-confirmed.gay/";
-                setActiveTab(proxyTab);
+            proxyTab.addEventListener("click", (e) => {
+                if (!e.target.classList.contains('ab-cloak-button')) {
+                    iframe.src = "https://rammerhead.is-confirmed.gay/";
+                    setActiveTab(proxyTab);
+                }
             });
 
             proxyCloakBtn.addEventListener("click", () => {
@@ -620,7 +658,7 @@
                     }
                 }, 0);
             });
-
+            
             // Universal Launcher Function
             function launchURL(url, inAboutBlank) {
                 if (!url) {
@@ -716,6 +754,11 @@
             
             // Close button logic
             closeButton.onclick = () => document.body.removeChild(chatContainer);
+            
+            // Reset button logic
+            resetButton.onclick = () => {
+                window.location.reload();
+            };
 
             // Dragging logic
             let isDragging = false, offsetX, offsetY;
