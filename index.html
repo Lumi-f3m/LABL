@@ -3,316 +3,433 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LABL</title>
+    <title>Multi-Tab Popup</title>
     <style>
         /* General Reset & Variables */
         :root {
-            /* Slightly darker palette, between original and last version */
-            --cat-dark-brown: #5d4e41; /* Slightly darker */
-            --cat-medium-brown: #7b6a5a;
-            --cat-light-tan: #9c9184;
-            --cat-creamy-white: #e8e4e1; /* Back to a creamy white */
-            --cat-warm-highlight: #d4a076; /* Original highlight color */
-            
-            /* UI Elements using the new palette */
-            --container-bg-color: rgba(61, 49, 39, 0.85); /* Slightly darker and less transparent */
-            --text-color: var(--cat-creamy-white);
-            --input-bg-color: rgba(255, 255, 255, 0.1);
-            --input-border-color: rgba(255, 255, 255, 0.2);
-            --input-focus-glow: var(--cat-warm-highlight);
-            --button-primary-bg: var(--cat-warm-highlight);
-            --button-primary-hover: #c98e60;
-            --button-secondary-bg: var(--cat-medium-brown);
-            --button-secondary-hover: #6a5a4b; /* Darker hover */
-            --button-text-color: var(--text-color);
-            --button-shadow-color: rgba(0, 0, 0, 0.4);
-            --border-light: rgba(255, 255, 255, 0.2);
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            /* Color Palette */
+            --bg-color: #2e2621;
+            --container-bg: rgba(77, 60, 46, 0.95); /* Slightly less transparent */
+            --header-bg: #4d3c2e;
+            --text-color: #e8e4e1;
+            --secondary-text-color: #a89a8c;
+            --button-color: #d4a076;
+            --button-hover: #c98e60;
+            --tab-color: #6b5a4a;
+            --tab-hover: #5d4e41;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.4);
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color); /* This makes the background a solid color */
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevents scrollbars on the main page */
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Main Popup Container - Now a full-screen window */
+        .chat-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw; /* Full width */
+            height: 100vh; /* Full height */
+            background: var(--container-bg);
+            border: none; /* No border needed for a full-screen view */
+            box-shadow: none; /* No shadow needed for a full-screen view */
+            border-radius: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 99999;
+            resize: none; /* No resize handle for a full-screen view */
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            color: var(--text-color);
+            transition: none;
+        }
+
+        /* Drag Handle/Header */
+        .chat-header {
+            background: var(--header-bg);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            cursor: grab;
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 0;
+            height: 50px;
+        }
+
+        /* Tab Navigation */
+        .tab-container {
+            display: flex;
+            gap: 2px;
+        }
+
+        .tab-button {
+            background-color: var(--tab-color);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            color: var(--secondary-text-color);
+            transition: background-color 0.2s ease, color 0.2s ease;
+            outline: none;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .tab-button:hover {
+            background-color: var(--tab-hover);
+        }
+
+        .tab-button.active {
+            background-color: var(--container-bg);
+            color: var(--text-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Close Button */
+        .close-button {
+            background: transparent;
+            color: var(--text-color);
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            height: 35px;
+            width: 35px;
+            border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            color: var(--text-color);
-            background-color: var(--cat-dark-brown);
-            padding: 2rem 0;
-            overflow-x: hidden;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            padding: 0;
+            margin-right: 5px;
         }
 
-        /* Main Container */
-        .container {
-            text-align: center;
-            padding: 3rem 4rem;
-            background-color: var(--container-bg-color);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            transition: transform 0.3s ease;
-            max-width: 650px;
-            width: 90%;
-            border: 1px solid var(--border-light);
-            backdrop-filter: blur(8px);
-            display: flex;
-            flex-direction: column;
-            gap: 1.8rem;
+        .close-button:hover {
+            background: #e74c3c;
+            color: white;
         }
 
-        .container:hover {
-            transform: translateY(-5px);
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            color: var(--cat-creamy-white);
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-        }
-
-        label {
-            display: block;
-            font-size: 1.1rem;
-            color: var(--cat-light-tan);
-            font-weight: 500;
-            margin-bottom: 0.8rem;
-        }
-
-        /* Input Field */
-        input[type="text"] {
-            padding: 15px 20px;
-            border: 1px solid var(--input-border-color);
-            border-radius: 8px;
-            width: 100%;
-            background-color: var(--input-bg-color);
-            color: var(--cat-creamy-white);
-            font-size: 1rem;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: var(--input-focus-glow);
-            box-shadow: 0 0 0 3px rgba(212, 160, 118, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .main-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Main Launch Button Styling */
-        #launchButton {
-            padding: 16px 35px;
-            background-color: var(--button-primary-bg);
-            color: var(--button-text-color);
+        /* Iframe and Tools Panel */
+        .content-iframe {
+            flex-grow: 1;
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.3s;
-            font-weight: 600;
-            font-size: 1.1rem;
-            letter-spacing: 0.05em;
-            box-shadow: 0 6px 20px var(--button-shadow-color);
-            text-transform: uppercase;
+            width: 100%;
+            height: 100%;
+            background-color: white;
         }
 
-        #launchButton:hover {
-            background-color: var(--button-primary-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px var(--button-shadow-color);
-        }
-
-        #launchButton:active {
-            transform: translateY(0);
-            box-shadow: 0 4px 15px var(--button-shadow-color);
+        .tools-container, .about-container {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background-color: var(--container-bg);
+            overflow-y: auto;
         }
         
-        /* Quick Links Section */
-        .quick-links-section {
+        /* Specific Tool Styles */
+        .tools-section {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border-light);
+            gap: 10px;
         }
 
-        .quick-links-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--cat-light-tan);
-            margin-bottom: 0.5rem;
+        .tools-section label {
+            font-size: 15px;
+            color: var(--secondary-text-color);
+        }
+        
+        .tools-section h3 {
+            color: var(--text-color);
+            margin-bottom: 5px;
         }
 
-        .quick-links-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 0.8rem;
-            justify-items: center;
+        .tools-section input[type="checkbox"] {
+            margin-right: 5px;
         }
 
-        .quick-link-button {
+        .tools-section textarea {
             width: 100%;
-            padding: 12px 15px;
-            background-color: var(--button-secondary-bg);
-            color: var(--button-text-color);
-            border: 1px solid var(--border-light);
+            height: 100px;
+            resize: vertical;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px;
+            font-family: 'monospace';
+            box-sizing: border-box;
+            background: var(--header-bg);
+            color: var(--text-color);
+        }
+        
+        .tools-section button {
+            padding: 10px 18px;
+            background-color: var(--button-color);
+            color: white;
+            border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s, color 0.2s;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            text-transform: none;
+            transition: background-color 0.2s;
+            font-weight: bold;
         }
 
-        .quick-link-button:hover {
-            background-color: var(--button-secondary-hover);
-            color: var(--cat-creamy-white);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        .tools-section button:hover {
+            background-color: var(--button-hover);
         }
 
-        .quick-link-button:active {
-            transform: translateY(0);
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-        }
-        /* End Quick Links Section */
-
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .container {
-                padding: 2.5rem 1.5rem;
-                gap: 1.5rem;
-            }
-            h1 {
-                font-size: 2rem;
-            }
-            input[type="text"] {
-                width: 100%;
-                max-width: 100%;
-                padding: 12px 15px;
-            }
-            #launchButton {
-                padding: 14px 25px;
-                font-size: 1rem;
-            }
-            .quick-links-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-                gap: 0.5rem;
-            }
-            .quick-link-button {
-                font-size: 0.85rem;
-                padding: 8px 10px;
-            }
+        .tools-section pre {
+            background: var(--header-bg);
+            padding: 12px;
+            border-radius: 6px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 14px;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
         }
     </style>
 </head>
 <body>
-    <main class="container" id="main-content">
-        <h1>Lumi's ab launcher</h1>
-        <div class="main-controls">
-            <label for="urlInput">Enter URL:</label>
-            <input type="text" id="urlInput" placeholder="https://example.com">
-            <button id="launchButton">Launch Site</button>
-        </div>
-
-        <section class="quick-links-section">
-            <h2 class="quick-links-title">Quick Links</h2>
-            <div class="quick-links-grid">
-                <button class="quick-link-button" onclick="launchURL('https://qyutxwivpd.thesqueakandoilchart.com/')">VaporV3 1</button>
-                <button class="quick-link-button" onclick="launchURL('https://classroom.google.com.alcrb.ru')">VaporV3 2</button>
-                <button class="quick-link-button" onclick="launchURL('https://vapor.my.cdn.cloudflare.net')">VaporV3 3</button>
-
-                <button class="quick-link-button" onclick="launchURL('https://gn-math.dev/')">GN-Math 1</button>
-                <button class="quick-link-button" onclick="launchURL('https://genizy-math.vercel.app/')">GN-Math 2</button>
-                <button class="quick-link-button" onclick="launchURL('https://cowgvavktw.lifescienceventurelab.com/')">GN-Math 3</button>
-
-                <button class="quick-link-button" onclick="launchURL('https://drive.google.com.fpr.net/')">RammerHead 1</button>
-                <button class="quick-link-button" onclick="launchURL('https://hsym1.lesuspect.com/')">RammerHead 2</button>
-                <button class="quick-link-button" onclick="launchURL('https://rammerhead.is-confirmed.gay/')">RammerHead 3</button>
-                <button class="quick-link-button" onclick="launchURL('https://drive.google.fpr.net/')">RammerHead 4</button>
-                <button class="quick-link-button" onclick="launchURL('https://sleep.phonk.toilets.tk/')">RammerHead 5</button>
-                <button class="quick-link-button" onclick="launchURL('https://tc44.smelly.cc/')">RammerHead 6</button>
-                <button class="quick-link-button" onclick="launchURL('https://higuysbikuist.vercel.app')">Bikuist Hub</button>
-                <button class="quick-link-button" onclick="launchURL('https://fheuwifuhewi.coolscience.cfd/')">Truffed 1</button>
-                <button class="quick-link-button" onclick="launchURL('https://otherthings.coolscience.cfd/')">Truffed 2</button>
-                <button class="quick-link-button" onclick="launchURL('https://jicwnew.coolscience.cfd/')">Truffed 3</button>
-                <button class="quick-link-button" onclick="launchURL('https://fejijfsk.coolscience.cfd/')">Truffed 4</button>
-                <button class="quick-link-button" onclick="launchURL('https://schoology.com.de/')">Truffed 5</button>
-                <button class="quick-link-button" onclick="launchURL('https://npm.lat/')">Truffed 6</button>
-                <button class="quick-link-button" onclick="launchURL('https://isuckdih.w3spaces.com/')">Doge Unb 1</button>
-                <button class="quick-link-button" onclick="launchURL('https://jakolbeesaidthenwordagain.vercel.app/')">Doge Unb 2</button>
-            </div>
-        </section>
-    </main>
-    
     <script>
-        const urlInput = document.getElementById('urlInput');
-        const launchButton = document.getElementById('launchButton');
+        function createChatGPTpopup() {
+            // Main container
+            const chatContainer = document.createElement("div");
+            chatContainer.classList.add("chat-container");
+            document.body.appendChild(chatContainer);
 
-        function launchURL(url) {
-            if (!url) {
-                alert('Please enter a URL or select a quick link.');
-                return;
-            }
+            // Header and tabs
+            const chatHeader = document.createElement("div");
+            chatHeader.classList.add("chat-header");
+            chatContainer.appendChild(chatHeader);
+
+            const tabContainer = document.createElement("div");
+            tabContainer.classList.add("tab-container");
+            chatHeader.appendChild(tabContainer);
+
+            const aboutTab = document.createElement("button");
+            aboutTab.classList.add("tab-button");
+            aboutTab.innerText = "About";
+            tabContainer.appendChild(aboutTab);
+
+            const googleTab = document.createElement("button");
+            googleTab.classList.add("tab-button");
+            googleTab.innerText = "Google";
+            tabContainer.appendChild(googleTab);
+
+            const chatTab = document.createElement("button");
+            chatTab.classList.add("tab-button");
+            chatTab.innerText = "AI";
+            tabContainer.appendChild(chatTab);
             
-            const newTab = window.open('about:blank', '_blank');
-            if (newTab) {
-                newTab.document.title = 'secret :3';
-                newTab.document.write(`
-                    <!DOCTYPE html>
-                    <html lang="en">
-                    <head>
-                        <title>secret :3</title>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <style>
-                            body { margin: 0; overflow: hidden; }
-                            iframe {
-                                position: fixed;
-                                top: 0;
-                                left: 0;
-                                width: 100vw;
-                                height: 100vh;
-                                border: none;
-                                display: block;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <iframe src="${url}"></iframe>
-                    </body>
-                    </html>
-                `);
-                newTab.document.close();
-            } else {
-                alert('Please allow pop-ups for this site to launch new tabs.');
+            const proxyTab = document.createElement("button");
+            proxyTab.classList.add("tab-button");
+            proxyTab.innerText = "Proxy";
+            tabContainer.appendChild(proxyTab);
+
+            const toolsTab = document.createElement("button");
+            toolsTab.classList.add("tab-button");
+            toolsTab.innerText = "Tools";
+            tabContainer.appendChild(toolsTab);
+
+            const closeButton = document.createElement("button");
+            closeButton.classList.add("close-button");
+            closeButton.innerText = "×";
+            chatHeader.appendChild(closeButton);
+
+            // Main content iframe
+            const iframe = document.createElement("iframe");
+            iframe.classList.add("content-iframe");
+            chatContainer.appendChild(iframe);
+
+            // About Panel
+            const aboutContainer = document.createElement("div");
+            aboutContainer.classList.add("about-container");
+            aboutContainer.style.display = "none";
+            aboutContainer.innerHTML = `
+                <h3>About This Tool</h3>
+                <p>This is a custom-made browser utility designed to help you access web content from a floating, draggable, and resizable window. It includes a built-in proxy and various tools to enhance your browsing experience.</p>
+                <br>
+                <h3>Features:</h3>
+                <ul>
+                    <li>- Navigate between tabs for Google, AI, and a web proxy.</li>
+                    <li>- Use the Tools tab to enable right-clicking or execute custom JavaScript code.</li>
+                    <li>- The entire popup is draggable and resizable for convenience.</li>
+                    <li>- Press Ctrl + E to hide or show the popup quickly.</li>
+                </ul>
+            `;
+            chatContainer.appendChild(aboutContainer);
+
+
+            // Tools Panel
+            const toolsContainer = document.createElement("div");
+            toolsContainer.classList.add("tools-container");
+            toolsContainer.style.display = "none";
+            chatContainer.appendChild(toolsContainer);
+
+            // Tools section: Right-click Toggler
+            const rightClickSection = document.createElement("div");
+            rightClickSection.classList.add("tools-section");
+            const rightClickCheckbox = document.createElement("input");
+            rightClickCheckbox.type = "checkbox";
+            rightClickCheckbox.id = "rightClickToggle";
+            const rightClickLabel = document.createElement("label");
+            rightClickLabel.innerText = "Enable Right Clicking";
+            rightClickLabel.setAttribute("for", "rightClickToggle");
+            rightClickSection.appendChild(rightClickCheckbox);
+            rightClickSection.appendChild(rightClickLabel);
+            toolsContainer.appendChild(rightClickSection);
+            
+            // Tools section: Javascript Executor
+            const codeExecutorSection = document.createElement("div");
+            codeExecutorSection.classList.add("tools-section");
+            const codeInputLabel = document.createElement("label");
+            codeInputLabel.innerText = "Enter Javascript Code:";
+            const codeInput = document.createElement("textarea");
+            const runCodeButton = document.createElement("button");
+            runCodeButton.innerText = "Execute";
+            const outputArea = document.createElement("pre");
+            codeExecutorSection.appendChild(codeInputLabel);
+            codeExecutorSection.appendChild(codeInput);
+            codeExecutorSection.appendChild(runCodeButton);
+            codeExecutorSection.appendChild(outputArea);
+            toolsContainer.appendChild(codeExecutorSection);
+
+            // Tab functionality
+            function setActiveTab(activeTab) {
+                const tabs = [aboutTab, googleTab, chatTab, proxyTab, toolsTab];
+                tabs.forEach(tab => {
+                    tab.classList.remove("active");
+                });
+                activeTab.classList.add("active");
+
+                // Show/hide containers
+                const containers = [iframe, aboutContainer, toolsContainer];
+                containers.forEach(container => container.style.display = "none");
+
+                if (activeTab === aboutTab) {
+                    aboutContainer.style.display = "flex";
+                } else if (activeTab === toolsTab) {
+                    toolsContainer.style.display = "flex";
+                } else {
+                    iframe.style.display = "block";
+                }
             }
+
+            aboutTab.addEventListener("click", () => {
+                setActiveTab(aboutTab);
+            });
+
+            googleTab.addEventListener("click", () => {
+                iframe.src = "https://www.google.com/webhp?igu=1";
+                setActiveTab(googleTab);
+            });
+
+            chatTab.addEventListener("click", () => {
+                iframe.src = "https://ai-bot-peach-seven.vercel.app/";
+                setActiveTab(chatTab);
+            });
+            
+            proxyTab.addEventListener("click", () => {
+                iframe.src = "https://rammerhead.is-confirmed.gay/";
+                setActiveTab(proxyTab);
+            });
+
+            toolsTab.addEventListener("click", () => {
+                setActiveTab(toolsTab);
+            });
+            
+            // Initial state
+            setActiveTab(aboutTab);
+
+            // Right-click logic
+            let contextMenuBlocked = false;
+            const contextMenuHandler = function (event) {
+                if (contextMenuBlocked) {
+                    event.stopPropagation();
+                }
+            };
+            
+            rightClickCheckbox.addEventListener("change", function () {
+                if (this.checked) {
+                    document.removeEventListener('contextmenu', contextMenuHandler, true);
+                } else {
+                    document.addEventListener('contextmenu', contextMenuHandler, true);
+                }
+            });
+
+            // Javascript Executor logic
+            runCodeButton.addEventListener("click", () => {
+                const code = codeInput.value;
+                const sandbox = document.createElement("iframe");
+                sandbox.style.display = "none";
+                document.body.appendChild(sandbox);
+                sandbox.contentWindow.console.log = (message) => {
+                    outputArea.textContent += message + '\n';
+                };
+                
+                try {
+                    outputArea.textContent = 'Executing...\n';
+                    const script = document.createElement("script");
+                    script.textContent = `try {
+                        const result = eval(decodeURIComponent('${encodeURIComponent(code)}'));
+                        window.console.log('Result: ' + result);
+                    } catch(error) {
+                        window.console.log('Error: ' + error.message);
+                    }`;
+                    sandbox.contentDocument.body.appendChild(script);
+                } catch (error) {
+                    outputArea.textContent = `Setup Error: ${error.message}`;
+                } finally {
+                    setTimeout(() => document.body.removeChild(sandbox), 500);
+                }
+            });
+            
+            // Close button logic
+            closeButton.onclick = () => document.body.removeChild(chatContainer);
+
+            // Dragging logic
+            // Disabled for full-screen mode
+            // let isDragging = false, offsetX, offsetY;
+
+            // chatHeader.addEventListener("mousedown", (e) => {
+            //     isDragging = true;
+            //     offsetX = e.clientX - chatContainer.offsetLeft;
+            //     offsetY = e.clientY - chatContainer.offsetTop;
+            //     chatHeader.style.cursor = "grabbing";
+            // });
+
+            // document.addEventListener("mousemove", (e) => {
+            //     if (!isDragging) return;
+            //     chatContainer.style.left = `${e.clientX - offsetX}px`;
+            //     chatContainer.style.top = `${e.clientY - offsetY}px`;
+            // });
+
+            // document.addEventListener("mouseup", () => {
+            //     isDragging = false;
+            //     chatHeader.style.cursor = "grab";
+            // });
+
+            // Keyboard shortcut to toggle visibility
+            document.addEventListener("keydown", (e) => {
+                if (e.ctrlKey && e.key.toLowerCase() === "e") {
+                    chatContainer.style.display = chatContainer.style.display === "none" ? "flex" : "none";
+                    e.preventDefault();
+                }
+            });
         }
 
-        launchButton.addEventListener('click', () => {
-            const url = urlInput.value.trim();
-            const formattedUrl = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
-            launchURL(formattedUrl);
-        });
-
-        urlInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const url = urlInput.value.trim();
-                const formattedUrl = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
-                launchURL(formattedUrl);
-            }
-        });
+        createChatGPTpopup();
     </script>
 </body>
 </html>
