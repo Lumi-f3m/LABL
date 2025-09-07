@@ -9,7 +9,7 @@
         :root {
             /* Color Palette */
             --bg-color: #2e2621;
-            --container-bg: rgba(77, 60, 46, 0.95);
+            --container-bg: rgba(77, 60, 46, 0.9);
             --header-bg: #4d3c2e;
             --text-color: #e8e4e1;
             --secondary-text-color: #a89a8c;
@@ -22,44 +22,32 @@
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: transparent;
             margin: 0;
             padding: 0;
             overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-        }
-
-        /* Particle effect */
-        .particle-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-color);
-            z-index: -1;
         }
 
         /* Main Popup Container */
         .chat-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px;
+            height: 550px;
             background: var(--container-bg);
-            border: none;
-            box-shadow: none;
-            border-radius: 0;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 25px var(--shadow-color);
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             z-index: 99999;
-            resize: none;
+            resize: both;
             overflow: hidden;
             font-family: 'Arial', sans-serif;
             color: var(--text-color);
-            transition: none;
+            transition: transform 0.2s ease-in-out;
         }
 
         /* Drag Handle/Header */
@@ -72,7 +60,7 @@
             user-select: none;
             cursor: grab;
             border-bottom: 1px solid var(--border-color);
-            border-radius: 0;
+            border-radius: 12px 12px 0 0;
             height: 50px;
         }
 
@@ -107,6 +95,26 @@
             z-index: 1;
         }
 
+        /* Cloak Button for each tab */
+        .ab-cloak-button {
+            background-color: #6b5a4a;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            color: var(--secondary-text-color);
+            transition: background-color 0.2s ease, color 0.2s ease;
+            outline: none;
+            border-radius: 6px 6px 0 0;
+            margin-left: 5px;
+        }
+
+        .ab-cloak-button:hover {
+            background-color: var(--button-hover);
+            color: white;
+        }
+
         /* Close Button */
         .close-button {
             background: transparent;
@@ -130,7 +138,7 @@
             color: white;
         }
 
-        /* Iframe and Tools Panel */
+        /* Iframe and Content Panels */
         .content-iframe {
             flex-grow: 1;
             border: none;
@@ -139,7 +147,7 @@
             background-color: white;
         }
 
-        .tools-container, .ab-cloak-container {
+        .content-panel {
             padding: 20px;
             flex-grow: 1;
             display: flex;
@@ -149,15 +157,25 @@
             overflow-y: auto;
         }
         
-        /* AB Cloak Container Styling (from original code) */
-        .ab-cloak-container .main-controls {
+        /* About Page Styles */
+        .about-page h3 {
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+        .about-page p, .about-page li {
+            font-size: 15px;
+            color: var(--secondary-text-color);
+        }
+
+        /* AB Cloak Page Styles */
+        .ab-cloak-page .main-controls {
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
             margin-bottom: 1.5rem;
         }
 
-        .ab-cloak-container h1 {
+        .ab-cloak-page h1 {
             font-size: 2.5rem;
             font-weight: 700;
             color: var(--text-color);
@@ -165,7 +183,7 @@
             margin-bottom: 2rem;
         }
 
-        .ab-cloak-container label {
+        .ab-cloak-page label {
             display: block;
             font-size: 1.1rem;
             color: var(--secondary-text-color);
@@ -173,7 +191,7 @@
             margin-bottom: 0.8rem;
         }
         
-        .ab-cloak-container input[type="text"] {
+        .ab-cloak-page input[type="text"] {
             padding: 15px 20px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -183,15 +201,16 @@
             font-size: 1rem;
             transition: border-color 0.3s, box-shadow 0.3s;
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
         }
 
-        .ab-cloak-container input[type="text"]:focus {
+        .ab-cloak-page input[type="text"]:focus {
             outline: none;
             border-color: var(--button-color);
             box-shadow: 0 0 0 3px rgba(212, 160, 118, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        .ab-cloak-container #launchButton, .ab-cloak-container #abBlankLaunchButton {
+        .ab-cloak-page #launchButton {
             padding: 16px 35px;
             background-color: var(--button-color);
             color: var(--text-color);
@@ -206,18 +225,18 @@
             text-transform: uppercase;
         }
 
-        .ab-cloak-container #launchButton:hover, .ab-cloak-container #abBlankLaunchButton:hover {
+        .ab-cloak-page #launchButton:hover {
             background-color: var(--button-hover);
             transform: translateY(-3px);
             box-shadow: 0 8px 25px var(--shadow-color);
         }
 
-        .ab-cloak-container #launchButton:active, .ab-cloak-container #abBlankLaunchButton:active {
+        .ab-cloak-page #launchButton:active {
             transform: translateY(0);
             box-shadow: 0 4px 15px var(--shadow-color);
         }
-
-        /* Tools & About styles */
+        
+        /* Tools Page Styles */
         .tools-section {
             display: flex;
             flex-direction: column;
@@ -273,99 +292,6 @@
     </style>
 </head>
 <body>
-    <div class="particle-bg" id="particle-canvas"></div>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script>
-        // Initialize Particles.js
-        particlesJS('particle-canvas', {
-            "particles": {
-                "number": {
-                    "value": 50,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#a89a8c"
-                },
-                "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000000"
-                    }
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": false,
-                    "anim": {
-                        "enable": false,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "size": {
-                    "value": 3,
-                    "random": true,
-                    "anim": {
-                        "enable": false,
-                        "speed": 40,
-                        "size_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#a89a8c",
-                    "opacity": 0.4,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 2,
-                    "direction": "none",
-                    "random": false,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": false,
-                        "rotateX": 600,
-                        "rotateY": 1200
-                    }
-                }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "grab"
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 140,
-                        "line_linked": {
-                            "opacity": 1
-                        }
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    }
-                }
-            },
-            "retina_detect": true
-        });
-    </script>
     <script>
         function createChatGPTpopup() {
             // Main container
@@ -382,26 +308,49 @@
             tabContainer.classList.add("tab-container");
             chatHeader.appendChild(tabContainer);
 
+            // About Tab
+            const aboutTab = document.createElement("button");
+            aboutTab.classList.add("tab-button");
+            aboutTab.innerText = "About";
+            tabContainer.appendChild(aboutTab);
+
+            // Google Tab & Button
             const googleTab = document.createElement("button");
             googleTab.classList.add("tab-button");
             googleTab.innerText = "Google";
             tabContainer.appendChild(googleTab);
+            const googleCloakBtn = document.createElement("button");
+            googleCloakBtn.classList.add("ab-cloak-button");
+            googleCloakBtn.innerText = "AB Cloak";
+            tabContainer.appendChild(googleCloakBtn);
 
+            // AI Tab & Button
             const chatTab = document.createElement("button");
             chatTab.classList.add("tab-button");
             chatTab.innerText = "AI";
             tabContainer.appendChild(chatTab);
+            const chatCloakBtn = document.createElement("button");
+            chatCloakBtn.classList.add("ab-cloak-button");
+            chatCloakBtn.innerText = "AB Cloak";
+            tabContainer.appendChild(chatCloakBtn);
             
+            // Proxy Tab & Button
             const proxyTab = document.createElement("button");
             proxyTab.classList.add("tab-button");
             proxyTab.innerText = "Proxy";
             tabContainer.appendChild(proxyTab);
+            const proxyCloakBtn = document.createElement("button");
+            proxyCloakBtn.classList.add("ab-cloak-button");
+            proxyCloakBtn.innerText = "AB Cloak";
+            tabContainer.appendChild(proxyCloakBtn);
 
+            // Tools Tab
             const toolsTab = document.createElement("button");
             toolsTab.classList.add("tab-button");
             toolsTab.innerText = "Tools";
             tabContainer.appendChild(toolsTab);
 
+            // AB Cloak Tab
             const abCloakTab = document.createElement("button");
             abCloakTab.classList.add("tab-button");
             abCloakTab.innerText = "AB Cloak";
@@ -417,9 +366,29 @@
             iframe.classList.add("content-iframe");
             chatContainer.appendChild(iframe);
 
+            // About Panel
+            const aboutContainer = document.createElement("div");
+            aboutContainer.classList.add("content-panel", "about-page");
+            aboutContainer.style.display = "none";
+            aboutContainer.innerHTML = `
+                <h3>About This Tool</h3>
+                <p>This is a custom-made browser utility designed to help you access web content from a floating, draggable, and resizable window. It includes a built-in proxy and various tools to enhance your browsing experience.</p>
+                <br>
+                <h3>Features:</h3>
+                <ul>
+                    <li>- Navigate between tabs for Google, AI, a web proxy, and a custom launcher.</li>
+                    <li>- The entire popup is draggable and resizable for convenience.</li>
+                    <li>- Use the "Tools" tab to enable right-clicking or execute custom JavaScript code.</li>
+                    <li>- Use the "AB Cloak" button next to any tab to launch that page in a new, cloaked about:blank window.</li>
+                    <li>- Press Ctrl + E to hide or show the popup quickly.</li>
+                </ul>
+            `;
+            chatContainer.appendChild(aboutContainer);
+
+
             // Tools Panel
             const toolsContainer = document.createElement("div");
-            toolsContainer.classList.add("tools-container");
+            toolsContainer.classList.add("content-panel");
             toolsContainer.style.display = "none";
             chatContainer.appendChild(toolsContainer);
 
@@ -451,54 +420,83 @@
             codeExecutorSection.appendChild(outputArea);
             toolsContainer.appendChild(codeExecutorSection);
 
-            // AB Cloak Panel
+            // AB Cloak Launcher Panel
             const abCloakContainer = document.createElement("div");
-            abCloakContainer.classList.add("ab-cloak-container");
+            abCloakContainer.classList.add("content-panel", "ab-cloak-page");
             abCloakContainer.style.display = "none";
             abCloakContainer.innerHTML = `
                 <div class="main-controls">
-                    <h1>Lumi's ab launcher</h1>
+                    <h1>Lumi's Launcher</h1>
                     <label for="urlInput">Enter URL:</label>
                     <input type="text" id="urlInput" placeholder="https://example.com">
-                    <button id="launchButton">Launch Site</button>
-                    <button id="abBlankLaunchButton">Launch in about:blank</button>
+                    <button id="launchButton">Launch in about:blank</button>
                 </div>
             `;
             chatContainer.appendChild(abCloakContainer);
             
             // Tab functionality
             function setActiveTab(activeTab) {
-                const tabs = [googleTab, chatTab, proxyTab, toolsTab, abCloakTab];
+                const tabs = [aboutTab, googleTab, chatTab, proxyTab, toolsTab, abCloakTab];
+                const cloakButtons = [googleCloakBtn, chatCloakBtn, proxyCloakBtn];
+                
                 tabs.forEach(tab => {
                     tab.classList.remove("active");
                 });
                 activeTab.classList.add("active");
 
-                const containers = [iframe, toolsContainer, abCloakContainer];
+                const containers = [iframe, aboutContainer, toolsContainer, abCloakContainer];
                 containers.forEach(container => container.style.display = "none");
                 
-                if (activeTab === toolsTab) {
+                cloakButtons.forEach(btn => btn.style.display = "none");
+
+                if (activeTab === aboutTab) {
+                    aboutContainer.style.display = "flex";
+                } else if (activeTab === toolsTab) {
                     toolsContainer.style.display = "flex";
                 } else if (activeTab === abCloakTab) {
                     abCloakContainer.style.display = "flex";
                 } else {
                     iframe.style.display = "block";
+                    // Show cloak button for the active iframe tab
+                    if (activeTab === googleTab) {
+                        googleCloakBtn.style.display = "block";
+                    } else if (activeTab === chatTab) {
+                        chatCloakBtn.style.display = "block";
+                    } else if (activeTab === proxyTab) {
+                        proxyCloakBtn.style.display = "block";
+                    }
                 }
             }
+
+            aboutTab.addEventListener("click", () => {
+                setActiveTab(aboutTab);
+            });
 
             googleTab.addEventListener("click", () => {
                 iframe.src = "https://www.google.com/webhp?igu=1";
                 setActiveTab(googleTab);
             });
 
+            googleCloakBtn.addEventListener("click", () => {
+                launchURL("https://www.google.com/webhp?igu=1", true);
+            });
+
             chatTab.addEventListener("click", () => {
                 iframe.src = "https://ai-bot-peach-seven.vercel.app/";
                 setActiveTab(chatTab);
+            });
+
+            chatCloakBtn.addEventListener("click", () => {
+                launchURL("https://ai-bot-peach-seven.vercel.app/", true);
             });
             
             proxyTab.addEventListener("click", () => {
                 iframe.src = "https://rammerhead.is-confirmed.gay/";
                 setActiveTab(proxyTab);
+            });
+
+            proxyCloakBtn.addEventListener("click", () => {
+                launchURL("https://rammerhead.is-confirmed.gay/", true);
             });
 
             toolsTab.addEventListener("click", () => {
@@ -512,13 +510,9 @@
                 setTimeout(() => {
                     const urlInput = abCloakContainer.querySelector('#urlInput');
                     const launchButton = abCloakContainer.querySelector('#launchButton');
-                    const abBlankLaunchButton = abCloakContainer.querySelector('#abBlankLaunchButton');
                     
                     if (launchButton) {
-                        launchButton.onclick = () => launchURL(urlInput.value.trim(), false);
-                    }
-                    if (abBlankLaunchButton) {
-                        abBlankLaunchButton.onclick = () => launchURL(urlInput.value.trim(), true);
+                        launchButton.onclick = () => launchURL(urlInput.value.trim(), true);
                     }
                 }, 0);
             });
@@ -570,13 +564,8 @@
                 }
             }
 
-            // Initial state: blank screen
-            iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(`
-                <body style="background-color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif;">
-                    launch in about:blank
-                </body>
-            `);
-            setActiveTab(googleTab);
+            // Initial state
+            setActiveTab(aboutTab);
 
             // Right-click logic
             let contextMenuBlocked = false;
@@ -623,6 +612,27 @@
             
             // Close button logic
             closeButton.onclick = () => document.body.removeChild(chatContainer);
+
+            // Dragging logic
+            let isDragging = false, offsetX, offsetY;
+
+            chatHeader.addEventListener("mousedown", (e) => {
+                isDragging = true;
+                offsetX = e.clientX - chatContainer.offsetLeft;
+                offsetY = e.clientY - chatContainer.offsetTop;
+                chatHeader.style.cursor = "grabbing";
+            });
+
+            document.addEventListener("mousemove", (e) => {
+                if (!isDragging) return;
+                chatContainer.style.left = `${e.clientX - offsetX}px`;
+                chatContainer.style.top = `${e.clientY - offsetY}px`;
+            });
+
+            document.addEventListener("mouseup", () => {
+                isDragging = false;
+                chatHeader.style.cursor = "grab";
+            });
 
             // Keyboard shortcut to toggle visibility
             document.addEventListener("keydown", (e) => {
