@@ -5,15 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LABL</title>
     <style>
-        /* General Reset & Variables - Original Darker Design */
+        /* General Reset & Variables */
         :root {
-            --cat-dark-brown: #4d3c2e;
-            --cat-medium-brown: #6b5a4a;
-            --cat-light-tan: #a89a8c;
-            --cat-creamy-white: #e8e4e1;
-            --cat-warm-highlight: #d4a076;
+            /* Slightly darker palette, between original and last version */
+            --cat-dark-brown: #5d4e41; /* Slightly darker */
+            --cat-medium-brown: #7b6a5a;
+            --cat-light-tan: #9c9184;
+            --cat-creamy-white: #e8e4e1; /* Back to a creamy white */
+            --cat-warm-highlight: #d4a076; /* Original highlight color */
             
-            --container-bg-color: rgba(77, 60, 46, 0.8);
+            /* UI Elements using the new palette */
+            --container-bg-color: rgba(61, 49, 39, 0.85); /* Slightly darker and less transparent */
             --text-color: var(--cat-creamy-white);
             --input-bg-color: rgba(255, 255, 255, 0.1);
             --input-border-color: rgba(255, 255, 255, 0.2);
@@ -21,7 +23,7 @@
             --button-primary-bg: var(--cat-warm-highlight);
             --button-primary-hover: #c98e60;
             --button-secondary-bg: var(--cat-medium-brown);
-            --button-secondary-hover: #5d4e41;
+            --button-secondary-hover: #6a5a4b; /* Darker hover */
             --button-text-color: var(--text-color);
             --button-shadow-color: rgba(0, 0, 0, 0.4);
             --border-light: rgba(255, 255, 255, 0.2);
@@ -45,8 +47,8 @@
             overflow-x: hidden;
         }
 
-        /* Launcher Container */
-        #launcher {
+        /* Main Container */
+        .container {
             text-align: center;
             padding: 3rem 4rem;
             background-color: var(--container-bg-color);
@@ -57,16 +59,16 @@
             width: 90%;
             border: 1px solid var(--border-light);
             backdrop-filter: blur(8px);
-            display: none; /* Hidden by default */
+            display: flex;
             flex-direction: column;
             gap: 1.8rem;
         }
 
-        #launcher:hover {
+        .container:hover {
             transform: translateY(-5px);
         }
 
-        h2 {
+        h1 {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 2rem;
@@ -82,6 +84,7 @@
             margin-bottom: 0.8rem;
         }
 
+        /* Input Field */
         input[type="text"] {
             padding: 15px 20px;
             border: 1px solid var(--input-border-color);
@@ -107,6 +110,7 @@
             margin-bottom: 1.5rem;
         }
 
+        /* Main Launch Button Styling */
         #launchButton {
             padding: 16px 35px;
             background-color: var(--button-primary-bg);
@@ -133,6 +137,7 @@
             box-shadow: 0 4px 15px var(--button-shadow-color);
         }
         
+        /* Quick Links Section */
         .quick-links-section {
             display: flex;
             flex-direction: column;
@@ -181,13 +186,15 @@
             transform: translateY(0);
             box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
         }
-        
+        /* End Quick Links Section */
+
+        /* Responsive adjustments */
         @media (max-width: 600px) {
-            #launcher {
+            .container {
                 padding: 2.5rem 1.5rem;
                 gap: 1.5rem;
             }
-            h2 {
+            h1 {
                 font-size: 2rem;
             }
             input[type="text"] {
@@ -208,56 +215,11 @@
                 padding: 8px 10px;
             }
         }
-
-        /* Pop-up Prompt Screen Styles */
-        #popup-prompt {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            display: none; /* Hidden by default */
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-            z-index: 1000;
-        }
-
-        #popup-prompt h2 {
-            font-size: 2rem;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        #popup-prompt p {
-            font-size: 1.2rem;
-            color: #555;
-            margin-bottom: 30px;
-        }
-
-        #popup-prompt button {
-            padding: 12px 24px;
-            font-size: 1rem;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        #popup-prompt button:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 <body>
-    <main id="launcher">
-        <h2>test</h2>
+    <main class="container" id="main-content">
+        <h1>Lumi's ab launcher</h1>
         <div class="main-controls">
             <label for="urlInput">Enter URL:</label>
             <input type="text" id="urlInput" placeholder="https://example.com">
@@ -294,17 +256,9 @@
         </section>
     </main>
     
-    <div id="popup-prompt">
-        <h2>Pop-ups Blocked</h2>
-        <p>Please allow pop-ups for this site to continue. Once you have, reload the page.</p>
-        <button onclick="window.location.reload()">Reload Page</button>
-    </div>
-
     <script>
         const urlInput = document.getElementById('urlInput');
         const launchButton = document.getElementById('launchButton');
-        const launcher = document.getElementById('launcher');
-        const popupPrompt = document.getElementById('popup-prompt');
 
         function launchURL(url) {
             if (!url) {
@@ -357,25 +311,6 @@
                 const url = urlInput.value.trim();
                 const formattedUrl = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
                 launchURL(formattedUrl);
-            }
-        });
-
-        window.addEventListener('load', () => {
-            const popupCheck = window.open('', '_blank', 'width=1,height=1,left=0,top=0,menubar=no,toolbar=no,location=no,status=no,resizeable=no');
-            
-            if (popupCheck) {
-                popupCheck.close();
-                launcher.style.display = 'flex';
-                popupPrompt.style.display = 'none';
-                
-                const newTab = window.open('about:blank', '_blank');
-                if (newTab) {
-                    newTab.focus();
-                }
-
-            } else {
-                launcher.style.display = 'none';
-                popupPrompt.style.display = 'flex';
             }
         });
     </script>
