@@ -9,7 +9,7 @@
         :root {
             /* Color Palette */
             --bg-color: #2e2621;
-            --container-bg: rgba(77, 60, 46, 0.95); /* Slightly less transparent */
+            --container-bg: rgba(77, 60, 46, 0.95);
             --header-bg: #4d3c2e;
             --text-color: #e8e4e1;
             --secondary-text-color: #a89a8c;
@@ -22,29 +22,29 @@
         }
 
         body {
-            background-color: var(--bg-color); /* This makes the background a solid color */
+            background-color: var(--bg-color);
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Prevents scrollbars on the main page */
+            overflow: hidden;
             height: 100vh;
             width: 100vw;
         }
 
-        /* Main Popup Container - Now a full-screen window */
+        /* Main Popup Container */
         .chat-container {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw; /* Full width */
-            height: 100vh; /* Full height */
+            width: 100vw;
+            height: 100vh;
             background: var(--container-bg);
-            border: none; /* No border needed for a full-screen view */
-            box-shadow: none; /* No shadow needed for a full-screen view */
+            border: none;
+            box-shadow: none;
             border-radius: 0;
             display: flex;
             flex-direction: column;
             z-index: 99999;
-            resize: none; /* No resize handle for a full-screen view */
+            resize: none;
             overflow: hidden;
             font-family: 'Arial', sans-serif;
             color: var(--text-color);
@@ -128,7 +128,7 @@
             background-color: white;
         }
 
-        .tools-container, .about-container {
+        .tools-container {
             padding: 20px;
             flex-grow: 1;
             display: flex;
@@ -217,11 +217,6 @@
             tabContainer.classList.add("tab-container");
             chatHeader.appendChild(tabContainer);
 
-            const aboutTab = document.createElement("button");
-            aboutTab.classList.add("tab-button");
-            aboutTab.innerText = "About";
-            tabContainer.appendChild(aboutTab);
-
             const googleTab = document.createElement("button");
             googleTab.classList.add("tab-button");
             googleTab.innerText = "Google";
@@ -251,25 +246,6 @@
             const iframe = document.createElement("iframe");
             iframe.classList.add("content-iframe");
             chatContainer.appendChild(iframe);
-
-            // About Panel
-            const aboutContainer = document.createElement("div");
-            aboutContainer.classList.add("about-container");
-            aboutContainer.style.display = "none";
-            aboutContainer.innerHTML = `
-                <h3>About This Tool</h3>
-                <p>This is a custom-made browser utility designed to help you access web content from a floating, draggable, and resizable window. It includes a built-in proxy and various tools to enhance your browsing experience.</p>
-                <br>
-                <h3>Features:</h3>
-                <ul>
-                    <li>- Navigate between tabs for Google, AI, and a web proxy.</li>
-                    <li>- Use the Tools tab to enable right-clicking or execute custom JavaScript code.</li>
-                    <li>- The entire popup is draggable and resizable for convenience.</li>
-                    <li>- Press Ctrl + E to hide or show the popup quickly.</li>
-                </ul>
-            `;
-            chatContainer.appendChild(aboutContainer);
-
 
             // Tools Panel
             const toolsContainer = document.createElement("div");
@@ -307,28 +283,22 @@
 
             // Tab functionality
             function setActiveTab(activeTab) {
-                const tabs = [aboutTab, googleTab, chatTab, proxyTab, toolsTab];
+                const tabs = [googleTab, chatTab, proxyTab, toolsTab];
                 tabs.forEach(tab => {
                     tab.classList.remove("active");
                 });
                 activeTab.classList.add("active");
 
                 // Show/hide containers
-                const containers = [iframe, aboutContainer, toolsContainer];
+                const containers = [iframe, toolsContainer];
                 containers.forEach(container => container.style.display = "none");
-
-                if (activeTab === aboutTab) {
-                    aboutContainer.style.display = "flex";
-                } else if (activeTab === toolsTab) {
+                
+                if (activeTab === toolsTab) {
                     toolsContainer.style.display = "flex";
                 } else {
                     iframe.style.display = "block";
                 }
             }
-
-            aboutTab.addEventListener("click", () => {
-                setActiveTab(aboutTab);
-            });
 
             googleTab.addEventListener("click", () => {
                 iframe.src = "https://www.google.com/webhp?igu=1";
@@ -349,8 +319,13 @@
                 setActiveTab(toolsTab);
             });
             
-            // Initial state
-            setActiveTab(aboutTab);
+            // Initial state: blank screen
+            iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(`
+                <body style="background-color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif;">
+                    launch in about:blank
+                </body>
+            `);
+            setActiveTab(googleTab); // Setting Google tab as active but showing a blank screen initially.
 
             // Right-click logic
             let contextMenuBlocked = false;
@@ -397,28 +372,6 @@
             
             // Close button logic
             closeButton.onclick = () => document.body.removeChild(chatContainer);
-
-            // Dragging logic
-            // Disabled for full-screen mode
-            // let isDragging = false, offsetX, offsetY;
-
-            // chatHeader.addEventListener("mousedown", (e) => {
-            //     isDragging = true;
-            //     offsetX = e.clientX - chatContainer.offsetLeft;
-            //     offsetY = e.clientY - chatContainer.offsetTop;
-            //     chatHeader.style.cursor = "grabbing";
-            // });
-
-            // document.addEventListener("mousemove", (e) => {
-            //     if (!isDragging) return;
-            //     chatContainer.style.left = `${e.clientX - offsetX}px`;
-            //     chatContainer.style.top = `${e.clientY - offsetY}px`;
-            // });
-
-            // document.addEventListener("mouseup", () => {
-            //     isDragging = false;
-            //     chatHeader.style.cursor = "grab";
-            // });
 
             // Keyboard shortcut to toggle visibility
             document.addEventListener("keydown", (e) => {
