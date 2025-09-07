@@ -66,7 +66,7 @@
             transform: translateY(-5px);
         }
 
-        h1 {
+        h2 {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 2rem;
@@ -187,7 +187,7 @@
                 padding: 2.5rem 1.5rem;
                 gap: 1.5rem;
             }
-            h1 {
+            h2 {
                 font-size: 2rem;
             }
             input[type="text"] {
@@ -257,7 +257,7 @@
 </head>
 <body>
     <main id="launcher">
-        <h1>Lumi's ab launcher</h1>
+        <h2>test</h2>
         <div class="main-controls">
             <label for="urlInput">Enter URL:</label>
             <input type="text" id="urlInput" placeholder="https://example.com">
@@ -361,23 +361,19 @@
         });
 
         window.addEventListener('load', () => {
-            // Attempt to open a dummy pop-up to check for blockers
             const popupCheck = window.open('', '_blank', 'width=1,height=1,left=0,top=0,menubar=no,toolbar=no,location=no,status=no,resizeable=no');
             
             if (popupCheck) {
-                // Pop-ups are enabled, so we can now safely launch the about:blank page
-                popupCheck.close(); // Close the dummy pop-up
-                launcher.style.display = 'flex'; // Show the launcher UI
-                popupPrompt.style.display = 'none'; // Hide the warning screen
+                popupCheck.close();
+                launcher.style.display = 'flex';
+                popupPrompt.style.display = 'none';
                 
-                // Now launch the actual about:blank page
                 const newTab = window.open('about:blank', '_blank');
                 if (newTab) {
                     newTab.focus();
                 }
 
             } else {
-                // Pop-ups are blocked, show the warning screen
                 launcher.style.display = 'none';
                 popupPrompt.style.display = 'flex';
             }
