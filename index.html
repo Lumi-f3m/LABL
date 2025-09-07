@@ -30,6 +30,17 @@
             width: 100vw;
         }
 
+        /* Particle effect */
+        .particle-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            z-index: -1;
+        }
+
         /* Main Popup Container */
         .chat-container {
             position: fixed;
@@ -128,7 +139,7 @@
             background-color: white;
         }
 
-        .tools-container {
+        .tools-container, .ab-cloak-container {
             padding: 20px;
             flex-grow: 1;
             display: flex;
@@ -138,27 +149,91 @@
             overflow-y: auto;
         }
         
-        /* Specific Tool Styles */
+        /* AB Cloak Container Styling (from original code) */
+        .ab-cloak-container .main-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ab-cloak-container h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+        }
+
+        .ab-cloak-container label {
+            display: block;
+            font-size: 1.1rem;
+            color: var(--secondary-text-color);
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+        }
+        
+        .ab-cloak-container input[type="text"] {
+            padding: 15px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            width: 100%;
+            background-color: var(--tab-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .ab-cloak-container input[type="text"]:focus {
+            outline: none;
+            border-color: var(--button-color);
+            box-shadow: 0 0 0 3px rgba(212, 160, 118, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .ab-cloak-container #launchButton, .ab-cloak-container #abBlankLaunchButton {
+            padding: 16px 35px;
+            background-color: var(--button-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.3s;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            box-shadow: 0 6px 20px var(--shadow-color);
+            text-transform: uppercase;
+        }
+
+        .ab-cloak-container #launchButton:hover, .ab-cloak-container #abBlankLaunchButton:hover {
+            background-color: var(--button-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--shadow-color);
+        }
+
+        .ab-cloak-container #launchButton:active, .ab-cloak-container #abBlankLaunchButton:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        /* Tools & About styles */
         .tools-section {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-
         .tools-section label {
             font-size: 15px;
             color: var(--secondary-text-color);
         }
-        
         .tools-section h3 {
             color: var(--text-color);
             margin-bottom: 5px;
         }
-
         .tools-section input[type="checkbox"] {
             margin-right: 5px;
         }
-
         .tools-section textarea {
             width: 100%;
             height: 100px;
@@ -171,7 +246,6 @@
             background: var(--header-bg);
             color: var(--text-color);
         }
-        
         .tools-section button {
             padding: 10px 18px;
             background-color: var(--button-color);
@@ -182,11 +256,9 @@
             transition: background-color 0.2s;
             font-weight: bold;
         }
-
         .tools-section button:hover {
             background-color: var(--button-hover);
         }
-
         .tools-section pre {
             background: var(--header-bg);
             padding: 12px;
@@ -201,6 +273,99 @@
     </style>
 </head>
 <body>
+    <div class="particle-bg" id="particle-canvas"></div>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Initialize Particles.js
+        particlesJS('particle-canvas', {
+            "particles": {
+                "number": {
+                    "value": 50,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#a89a8c"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#a89a8c",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
     <script>
         function createChatGPTpopup() {
             // Main container
@@ -236,6 +401,11 @@
             toolsTab.classList.add("tab-button");
             toolsTab.innerText = "Tools";
             tabContainer.appendChild(toolsTab);
+
+            const abCloakTab = document.createElement("button");
+            abCloakTab.classList.add("tab-button");
+            abCloakTab.innerText = "AB Cloak";
+            tabContainer.appendChild(abCloakTab);
 
             const closeButton = document.createElement("button");
             closeButton.classList.add("close-button");
@@ -281,20 +451,36 @@
             codeExecutorSection.appendChild(outputArea);
             toolsContainer.appendChild(codeExecutorSection);
 
+            // AB Cloak Panel
+            const abCloakContainer = document.createElement("div");
+            abCloakContainer.classList.add("ab-cloak-container");
+            abCloakContainer.style.display = "none";
+            abCloakContainer.innerHTML = `
+                <div class="main-controls">
+                    <h1>Lumi's ab launcher</h1>
+                    <label for="urlInput">Enter URL:</label>
+                    <input type="text" id="urlInput" placeholder="https://example.com">
+                    <button id="launchButton">Launch Site</button>
+                    <button id="abBlankLaunchButton">Launch in about:blank</button>
+                </div>
+            `;
+            chatContainer.appendChild(abCloakContainer);
+            
             // Tab functionality
             function setActiveTab(activeTab) {
-                const tabs = [googleTab, chatTab, proxyTab, toolsTab];
+                const tabs = [googleTab, chatTab, proxyTab, toolsTab, abCloakTab];
                 tabs.forEach(tab => {
                     tab.classList.remove("active");
                 });
                 activeTab.classList.add("active");
 
-                // Show/hide containers
-                const containers = [iframe, toolsContainer];
+                const containers = [iframe, toolsContainer, abCloakContainer];
                 containers.forEach(container => container.style.display = "none");
                 
                 if (activeTab === toolsTab) {
                     toolsContainer.style.display = "flex";
+                } else if (activeTab === abCloakTab) {
+                    abCloakContainer.style.display = "flex";
                 } else {
                     iframe.style.display = "block";
                 }
@@ -318,14 +504,79 @@
             toolsTab.addEventListener("click", () => {
                 setActiveTab(toolsTab);
             });
-            
+
+            abCloakTab.addEventListener("click", () => {
+                setActiveTab(abCloakTab);
+                
+                // Set up event listeners for the AB Cloak page after it's visible
+                setTimeout(() => {
+                    const urlInput = abCloakContainer.querySelector('#urlInput');
+                    const launchButton = abCloakContainer.querySelector('#launchButton');
+                    const abBlankLaunchButton = abCloakContainer.querySelector('#abBlankLaunchButton');
+                    
+                    if (launchButton) {
+                        launchButton.onclick = () => launchURL(urlInput.value.trim(), false);
+                    }
+                    if (abBlankLaunchButton) {
+                        abBlankLaunchButton.onclick = () => launchURL(urlInput.value.trim(), true);
+                    }
+                }, 0);
+            });
+
+            // Universal Launcher Function
+            function launchURL(url, inAboutBlank) {
+                if (!url) {
+                    alert('Please enter a URL.');
+                    return;
+                }
+                
+                const formattedUrl = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
+                
+                if (inAboutBlank) {
+                    const newTab = window.open('about:blank', '_blank');
+                    if (newTab) {
+                        newTab.document.title = 'secret :3';
+                        newTab.document.write(`
+                            <!DOCTYPE html>
+                            <html lang="en">
+                            <head>
+                                <title>secret :3</title>
+                                <meta charset="UTF-8">
+                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                <style>
+                                    body { margin: 0; overflow: hidden; }
+                                    iframe {
+                                        position: fixed;
+                                        top: 0;
+                                        left: 0;
+                                        width: 100vw;
+                                        height: 100vh;
+                                        border: none;
+                                        display: block;
+                                    }
+                                </style>
+                            </head>
+                            <body>
+                                <iframe src="${formattedUrl}"></iframe>
+                            </body>
+                            </html>
+                        `);
+                        newTab.document.close();
+                    } else {
+                        alert('Please allow pop-ups for this site to launch new tabs.');
+                    }
+                } else {
+                    iframe.src = formattedUrl;
+                }
+            }
+
             // Initial state: blank screen
             iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(`
                 <body style="background-color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif;">
                     launch in about:blank
                 </body>
             `);
-            setActiveTab(googleTab); // Setting Google tab as active but showing a blank screen initially.
+            setActiveTab(googleTab);
 
             // Right-click logic
             let contextMenuBlocked = false;
