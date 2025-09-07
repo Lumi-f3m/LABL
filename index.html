@@ -79,7 +79,6 @@
             gap: 2px;
         }
         
-        /* New Tab Button Styling */
         .tab-button {
             background-color: var(--tab-color);
             border: none;
@@ -91,7 +90,7 @@
             transition: background-color 0.2s ease, color 0.2s ease;
             outline: none;
             border-radius: 6px 6px 0 0;
-            display: flex; /* Makes the button a flex container */
+            display: flex;
             align-items: center;
         }
 
@@ -106,43 +105,15 @@
             position: relative;
             z-index: 1;
         }
-
-        /* Styling for the nested AB Cloak button */
-        .tab-button .ab-cloak-button {
-            margin-left: 8px; /* Space between text and button */
-            padding: 4px 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            background-color: var(--ab-button-color);
-            color: var(--header-bg);
-            font-size: 12px;
-            font-weight: bold;
-            transition: background-color 0.2s ease, color 0.2s ease;
-        }
         
-        .tab-button .ab-cloak-button:hover {
-            background-color: var(--ab-button-hover);
-            color: var(--header-bg);
-        }
-        
-        .tab-button.active .ab-cloak-button {
-            background-color: var(--ab-button-hover);
-            color: var(--header-bg);
-        }
-
-        .tab-button.active .ab-cloak-button:hover {
-            background-color: #d4a076;
-            color: white;
-        }
-        
-        /* Close Button and Reset Button */
+        /* Control Buttons (Reset and Close) and the new AB button */
         .control-buttons {
             display: flex;
             align-items: center;
             gap: 5px;
         }
 
-        .close-button, .reset-button {
+        .close-button, .reset-button, .cloak-current-button {
             background: transparent;
             color: var(--text-color);
             border: none;
@@ -163,14 +134,14 @@
             color: white;
         }
         
-        .reset-button {
+        .reset-button, .cloak-current-button {
             font-size: 16px;
             width: auto;
             border-radius: 8px;
             padding: 0 10px;
         }
         
-        .reset-button:hover {
+        .reset-button:hover, .cloak-current-button:hover {
             background: var(--button-hover);
             color: white;
         }
@@ -443,40 +414,22 @@
             aboutTab.innerText = "About";
             tabContainer.appendChild(aboutTab);
 
-            // Google Tab & Button
+            // Google Tab
             const googleTab = document.createElement("button");
             googleTab.classList.add("tab-button");
-            const googleTabSpan = document.createElement("span");
-            googleTabSpan.innerText = "Google";
-            googleTab.appendChild(googleTabSpan);
-            const googleCloakBtn = document.createElement("button");
-            googleCloakBtn.classList.add("ab-cloak-button");
-            googleCloakBtn.innerText = "AB";
-            googleTab.appendChild(googleCloakBtn);
+            googleTab.innerText = "Google";
             tabContainer.appendChild(googleTab);
 
-            // AI Tab & Button
+            // AI Tab
             const chatTab = document.createElement("button");
             chatTab.classList.add("tab-button");
-            const chatTabSpan = document.createElement("span");
-            chatTabSpan.innerText = "AI";
-            chatTab.appendChild(chatTabSpan);
-            const chatCloakBtn = document.createElement("button");
-            chatCloakBtn.classList.add("ab-cloak-button");
-            chatCloakBtn.innerText = "AB";
-            chatTab.appendChild(chatCloakBtn);
+            chatTab.innerText = "AI";
             tabContainer.appendChild(chatTab);
             
-            // Proxy Tab & Button
+            // Proxy Tab
             const proxyTab = document.createElement("button");
             proxyTab.classList.add("tab-button");
-            const proxyTabSpan = document.createElement("span");
-            proxyTabSpan.innerText = "Proxy";
-            proxyTab.appendChild(proxyTabSpan);
-            const proxyCloakBtn = document.createElement("button");
-            proxyCloakBtn.classList.add("ab-cloak-button");
-            proxyCloakBtn.innerText = "AB";
-            proxyTab.appendChild(proxyCloakBtn);
+            proxyTab.innerText = "Proxy";
             tabContainer.appendChild(proxyTab);
 
             // Tools Tab
@@ -491,10 +444,15 @@
             abCloakTab.innerText = "AB Cloak";
             tabContainer.appendChild(abCloakTab);
 
-            // Control Buttons (Reset and Close)
+            // Control Buttons (Reset, Cloak and Close)
             const controlButtons = document.createElement("div");
             controlButtons.classList.add("control-buttons");
             chatHeader.appendChild(controlButtons);
+            
+            const cloakCurrentButton = document.createElement("button");
+            cloakCurrentButton.classList.add("cloak-current-button");
+            cloakCurrentButton.innerText = "AB Cloak";
+            controlButtons.appendChild(cloakCurrentButton);
 
             const resetButton = document.createElement("button");
             resetButton.classList.add("reset-button");
@@ -505,7 +463,6 @@
             closeButton.classList.add("close-button");
             closeButton.innerText = "×";
             controlButtons.appendChild(closeButton);
-
 
             // Main content iframe
             const iframe = document.createElement("iframe");
@@ -525,7 +482,7 @@
                     <li>- Navigate between tabs for Google, AI, a web proxy, and a custom launcher.</li>
                     <li>- The entire popup is draggable and resizable for convenience.</li>
                     <li>- Use the "Tools" tab to enable right-clicking or execute custom JavaScript code.</li>
-                    <li>- Use the "AB" button within a tab to launch that page in a new, cloaked about:blank window.</li>
+                    <li>- Use the "AB Cloak" button in the header to launch the currently viewed site in a new, cloaked about:blank window.</li>
                     <li>- Press Ctrl + E to hide or show the popup quickly.</li>
                 </ul>
             `;
@@ -609,36 +566,18 @@
             });
 
             googleTab.addEventListener("click", (e) => {
-                if (!e.target.classList.contains('ab-cloak-button')) {
-                    iframe.src = "https://www.google.com/webhp?igu=1";
-                    setActiveTab(googleTab);
-                }
-            });
-
-            googleCloakBtn.addEventListener("click", () => {
-                launchURL("https://www.google.com/webhp?igu=1", true);
+                iframe.src = "https://www.google.com/webhp?igu=1";
+                setActiveTab(googleTab);
             });
 
             chatTab.addEventListener("click", (e) => {
-                if (!e.target.classList.contains('ab-cloak-button')) {
-                    iframe.src = "https://ai-bot-peach-seven.vercel.app/";
-                    setActiveTab(chatTab);
-                }
-            });
-
-            chatCloakBtn.addEventListener("click", () => {
-                launchURL("https://ai-bot-peach-seven.vercel.app/", true);
+                iframe.src = "https://ai-bot-peach-seven.vercel.app/";
+                setActiveTab(chatTab);
             });
             
             proxyTab.addEventListener("click", (e) => {
-                if (!e.target.classList.contains('ab-cloak-button')) {
-                    iframe.src = "https://rammerhead.is-confirmed.gay/";
-                    setActiveTab(proxyTab);
-                }
-            });
-
-            proxyCloakBtn.addEventListener("click", () => {
-                launchURL("https://rammerhead.is-confirmed.gay/", true);
+                iframe.src = "https://rammerhead.is-confirmed.gay/";
+                setActiveTab(proxyTab);
             });
 
             toolsTab.addEventListener("click", () => {
@@ -657,6 +596,15 @@
                         launchButton.onclick = () => launchURL(urlInput.value.trim(), true);
                     }
                 }, 0);
+            });
+
+            cloakCurrentButton.addEventListener("click", () => {
+                const currentUrl = iframe.contentWindow.location.href;
+                if (currentUrl && currentUrl !== 'about:blank') {
+                    launchURL(currentUrl, true);
+                } else {
+                    alert('Please navigate to a website first before using this button.');
+                }
             });
             
             // Universal Launcher Function
