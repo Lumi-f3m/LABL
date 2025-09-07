@@ -5,270 +5,150 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LABL</title>
     <style>
-        /* General Reset & Variables */
-        :root {
-            /* Slightly darker palette, between original and last version */
-            --cat-dark-brown: #5d4e41; /* Slightly darker */
-            --cat-medium-brown: #7b6a5a;
-            --cat-light-tan: #9c9184;
-            --cat-creamy-white: #e8e4e1; /* Back to a creamy white */
-            --cat-warm-highlight: #d4a076; /* Original highlight color */
-            
-            /* UI Elements using the new palette */
-            --container-bg-color: rgba(61, 49, 39, 0.85); /* Slightly darker and less transparent */
-            --text-color: var(--cat-creamy-white);
-            --input-bg-color: rgba(255, 255, 255, 0.1);
-            --input-border-color: rgba(255, 255, 255, 0.2);
-            --input-focus-glow: var(--cat-warm-highlight);
-            --button-primary-bg: var(--cat-warm-highlight);
-            --button-primary-hover: #c98e60;
-            --button-secondary-bg: var(--cat-medium-brown);
-            --button-secondary-hover: #6a5a4b; /* Darker hover */
-            --button-text-color: var(--text-color);
-            --button-shadow-color: rgba(0, 0, 0, 0.4);
-            --border-light: rgba(255, 255, 255, 0.2);
-        }
-
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        /* All CSS for the pop-up warning page */
         body {
             font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            color: var(--text-color);
-            background-color: var(--cat-dark-brown);
-            padding: 2rem 0;
-            overflow-x: hidden;
+            background-color: white;
+            color: #333;
+            text-align: center;
         }
 
-        /* Main Container */
         .container {
-            text-align: center;
-            padding: 3rem 4rem;
-            background-color: var(--container-bg-color);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            transition: transform 0.3s ease;
-            max-width: 650px;
-            width: 90%;
-            border: 1px solid var(--border-light);
-            backdrop-filter: blur(8px);
+            max-width: 600px;
+            padding: 2rem;
             display: flex;
             flex-direction: column;
-            gap: 1.8rem;
-        }
-
-        .container:hover {
-            transform: translateY(-5px);
+            align-items: center;
         }
 
         h1 {
             font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            color: var(--cat-creamy-white);
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            margin-bottom: 1rem;
+            color: #1a1a1a;
         }
 
-        label {
-            display: block;
+        p {
             font-size: 1.1rem;
-            color: var(--cat-light-tan);
-            font-weight: 500;
-            margin-bottom: 0.8rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
         }
 
-        /* Input Field */
-        input[type="text"] {
-            padding: 15px 20px;
-            border: 1px solid var(--input-border-color);
-            border-radius: 8px;
-            width: 100%;
-            background-color: var(--input-bg-color);
-            color: var(--cat-creamy-white);
+        button {
+            padding: 12px 24px;
             font-size: 1rem;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: var(--input-focus-glow);
-            box-shadow: 0 0 0 3px rgba(212, 160, 118, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .main-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Main Launch Button Styling */
-        #launchButton {
-            padding: 16px 35px;
-            background-color: var(--button-primary-bg);
-            color: var(--button-text-color);
+            font-weight: 600;
+            background-color: #007bff;
+            color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.3s;
-            font-weight: 600;
-            font-size: 1.1rem;
-            letter-spacing: 0.05em;
-            box-shadow: 0 6px 20px var(--button-shadow-color);
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* --- New CSS for the launcher page itself --- */
+
+        #launcher {
+            display: none; /* This is hidden by default */
+            /* All original launcher CSS from your previous code */
+            background-color: #5d4e41; /* Slightly darker */
+            color: #e8e4e1;
+            padding: 3rem 4rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            width: 90%;
+            max-width: 650px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+        
+        #launcher h1 {
+            color: #e8e4e1;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        #launcher label {
+            color: #9c9184;
+        }
+        
+        #launcher input[type="text"] {
+            padding: 15px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #e8e4e1;
+            font-size: 1rem;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        #launcher input[type="text"]:focus {
+            outline: none;
+            border-color: #d4a076;
+            box-shadow: 0 0 0 3px rgba(212, 160, 118, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        #launcher #launchButton {
+            padding: 16px 35px;
+            background-color: #d4a076;
+            color: #e8e4e1;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
             text-transform: uppercase;
         }
 
-        #launchButton:hover {
-            background-color: var(--button-primary-hover);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px var(--button-shadow-color);
-        }
-
-        #launchButton:active {
-            transform: translateY(0);
-            box-shadow: 0 4px 15px var(--button-shadow-color);
-        }
-        
-        /* Quick Links Section */
-        .quick-links-section {
+        #launcher .quick-links-section {
             display: flex;
             flex-direction: column;
             gap: 1rem;
             padding-top: 1.5rem;
-            border-top: 1px solid var(--border-light);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
-
-        .quick-links-title {
+        
+        #launcher .quick-links-title {
             font-size: 1.3rem;
             font-weight: 600;
-            color: var(--cat-light-tan);
+            color: #9c9184;
             margin-bottom: 0.5rem;
         }
 
-        .quick-links-grid {
+        #launcher .quick-links-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 0.8rem;
             justify-items: center;
         }
 
-        .quick-link-button {
+        #launcher .quick-link-button {
             width: 100%;
             padding: 12px 15px;
-            background-color: var(--button-secondary-bg);
-            color: var(--button-text-color);
-            border: 1px solid var(--border-light);
+            background-color: #7b6a5a;
+            color: #e8e4e1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s, color 0.2s;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
             text-transform: none;
-        }
-
-        .quick-link-button:hover {
-            background-color: var(--button-secondary-hover);
-            color: var(--cat-creamy-white);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-        }
-
-        .quick-link-button:active {
-            transform: translateY(0);
-            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-        }
-        /* End Quick Links Section */
-
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .container {
-                padding: 2.5rem 1.5rem;
-                gap: 1.5rem;
-            }
-            h1 {
-                font-size: 2rem;
-            }
-            input[type="text"] {
-                width: 100%;
-                max-width: 100%;
-                padding: 12px 15px;
-            }
-            #launchButton {
-                padding: 14px 25px;
-                font-size: 1rem;
-            }
-            .quick-links-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-                gap: 0.5rem;
-            }
-            .quick-link-button {
-                font-size: 0.85rem;
-                padding: 8px 10px;
-            }
-        }
-
-        /* Popup overlay styles */
-        #popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-            z-index: 1000;
-        }
-
-        #popup-overlay h2 {
-            font-size: 2rem;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        #popup-overlay p {
-            font-size: 1.2rem;
-            color: #555;
-            margin-bottom: 30px;
-        }
-
-        #popup-overlay button {
-            padding: 12px 24px;
-            font-size: 1rem;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        #popup-overlay button:hover {
-            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <div id="popup-overlay" style="display: none;">
-        <h2>Pop-ups Blocked</h2>
-        <p>Please allow pop-ups for this site to continue.</p>
+    <main class="container" id="popup-prompt">
+        <h1>Pop-ups Blocked</h1>
+        <p>Please allow pop-ups for this site to continue. Once you have, reload the page.</p>
         <button onclick="window.location.reload()">Reload Page</button>
-    </div>
-    <main class="container" id="main-content" style="display: none;">
+    </main>
+
+    <div id="launcher">
         <h1>Lumi's ab launcher</h1>
         <div class="main-controls">
             <label for="urlInput">Enter URL:</label>
@@ -282,11 +162,9 @@
                 <button class="quick-link-button" onclick="launchURL('https://qyutxwivpd.thesqueakandoilchart.com/')">VaporV3 1</button>
                 <button class="quick-link-button" onclick="launchURL('https://classroom.google.com.alcrb.ru')">VaporV3 2</button>
                 <button class="quick-link-button" onclick="launchURL('https://vapor.my.cdn.cloudflare.net')">VaporV3 3</button>
-
                 <button class="quick-link-button" onclick="launchURL('https://gn-math.dev/')">GN-Math 1</button>
                 <button class="quick-link-button" onclick="launchURL('https://genizy-math.vercel.app/')">GN-Math 2</button>
                 <button class="quick-link-button" onclick="launchURL('https://cowgvavktw.lifescienceventurelab.com/')">GN-Math 3</button>
-
                 <button class="quick-link-button" onclick="launchURL('https://drive.google.com.fpr.net/')">RammerHead 1</button>
                 <button class="quick-link-button" onclick="launchURL('https://hsym1.lesuspect.com/')">RammerHead 2</button>
                 <button class="quick-link-button" onclick="launchURL('https://rammerhead.is-confirmed.gay/')">RammerHead 3</button>
@@ -304,11 +182,13 @@
                 <button class="quick-link-button" onclick="launchURL('https://jakolbeesaidthenwordagain.vercel.app/')">Doge Unb 2</button>
             </div>
         </section>
-    </main>
-    
+    </div>
+
     <script>
         const urlInput = document.getElementById('urlInput');
         const launchButton = document.getElementById('launchButton');
+        const popupPrompt = document.getElementById('popup-prompt');
+        const launcher = document.getElementById('launcher');
 
         function launchURL(url) {
             if (!url) {
@@ -365,15 +245,16 @@
         });
 
         window.addEventListener('load', () => {
-            // Check for a pop-up blocker by trying to open a new window
-            const popupCheck = window.open('about:blank', '_blank');
+            const popupCheck = window.open('', '_blank', 'width=1,height=1,left=0,top=0,menubar=no,toolbar=no,location=no,status=no,resizeable=no');
             if (popupCheck) {
-                // Pop-ups were allowed, close the temporary window and show the main content
+                // If pop-ups are enabled, close the temporary window and show the launcher
                 popupCheck.close();
-                document.getElementById('main-content').style.display = 'flex';
+                popupPrompt.style.display = 'none';
+                launcher.style.display = 'flex';
             } else {
-                // Pop-ups were blocked, show the overlay message
-                document.getElementById('popup-overlay').style.display = 'flex';
+                // If pop-ups are blocked, show the white prompt screen and hide the launcher
+                popupPrompt.style.display = 'flex';
+                launcher.style.display = 'none';
             }
         });
     </script>
