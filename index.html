@@ -37,7 +37,6 @@
 
     <script>
         document.getElementById('launchButton').addEventListener('click', async () => {
-            // 1. Open the new tab immediately (requires user click)
             const newTab = window.open('about:blank', '_blank'); 
 
             if (!newTab) {
@@ -46,9 +45,7 @@
             }
 
             try {
-                // 2. FETCH the content of the main launcher file. NO HTML IN THIS LINE.
-                // Using a relative path ('main.html') is best if both files are in the root.
-                const response = await fetch('main.html');
+                const response = await fetch('https://labl.vercel.app/main.html');
                 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch main.html: ${response.status}`);
@@ -56,18 +53,14 @@
                 
                 // 3. Get the HTML content as a string
                 const htmlContent = await response.text();
-
-                // 4. Write the fetched HTML content into the blank tab
                 newTab.document.write(htmlContent);
                 newTab.document.close();
-                
-                // 5. Redirect the original (index.html) tab to Google
                 window.location.replace('https://www.google.com'); 
 
             } catch (error) {
                 console.error('Launch Error:', error);
                 alert('Could not load the launcher content. Check the console for details.');
-                newTab.close(); // Close the blank tab if load fails
+                newTab.close();
             }
         });
     </script>
