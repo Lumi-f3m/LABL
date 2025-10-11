@@ -331,10 +331,26 @@
     <script>
         const urlInput = document.getElementById('urlInput');
         const launchButton = document.getElementById('launchButton');
-        const startButton = document.getElementById('startButton'); // New element
-        const launchModal = document.getElementById('launch-modal'); // New element
-        
-        // The original launchURL function - no changes needed here
+        const startButton = document.getElementById('startButton');
+        const launchModal = document.getElementById('launch-modal');
+
+        /**
+         * Checks if the current page is running inside the about:blank pop-up
+         * and automatically hides the launch modal if so.
+         */
+        function checkAndHideModal() {
+            // Check if this is the about:blank page OR if it was opened by another window
+            // The setTimeout is used to ensure the DOM has fully loaded the styles for the fade-out effect.
+            if (window.location.href === 'about:blank' || window.opener) {
+                setTimeout(() => {
+                    launchModal.classList.add('hidden');
+                }, 100); 
+            }
+        }
+
+        // Run the check on load for the copied page in the new tab
+        checkAndHideModal();
+
         function launchURL(url) {
             if (!url) {
                 alert('Please enter a URL or select a quick link.');
@@ -375,14 +391,14 @@
             }
         }
 
-        // Existing Launch button event listener
+        // Handler for the main URL input and launch button
         launchButton.addEventListener('click', () => {
             const url = urlInput.value.trim();
             const formattedUrl = url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
             launchURL(formattedUrl);
         });
 
-        // Existing Input 'Enter' event listener
+        // Handler for the 'Enter' key press in the URL input
         urlInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const url = urlInput.value.trim();
@@ -391,29 +407,26 @@
             }
         });
 
-        // --- New Launch Sequence ---
+        // The Initial Launch Sequence - triggered by the user to start the process
         startButton.addEventListener('click', () => {
-            // 1. Open a new tab to a blank page
             const newTab = window.open('about:blank', '_blank');
             
             if (newTab) {
-                // 2. Write the content of the current page into the new tab's document
+                // 1. Copy the current page content (including this script) to the new blank tab
                 newTab.document.write(document.documentElement.outerHTML);
                 newTab.document.close();
                 
-                // 3. Optional: Change the current tab to a generic page (e.g., Google) or close it
-                // Using a generic URL is usually better than closing the window if you didn't open it.
+                // 2. Redirect the ORIGINAL tab to a safe URL (Google)
                 window.location.replace('https://www.google.com'); 
                 
-                // 4. Hide the modal (optional fade-out)
-                launchModal.classList.add('hidden');
+                // The copied script in the new tab will run checkAndHideModal()
+                // and successfully hide the modal, revealing the launcher interface.
             } else {
-                // If the pop-up was blocked
+                // If the pop-up was blocked, inform the user
                 alert('Pop-up blocked! Please allow pop-ups for this site to work.');
-                launchModal.classList.remove('hidden'); // Keep modal visible
+                launchModal.classList.remove('hidden');
             }
         });
-        // --- End New Launch Sequence ---
     </script>
 </body>
 </html>
