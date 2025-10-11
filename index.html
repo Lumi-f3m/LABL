@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Click to Launch</title>
+    <title>Launch</title>
     <style>
-        /* Simplified Styling for the landing button */
+        /* Minimal styling for the launch button */
         body {
             display: flex;
             justify-content: center;
@@ -15,32 +15,29 @@
             font-family: sans-serif;
             margin: 0;
         }
-        #startButton {
+        #launchButton {
             padding: 20px 40px;
             font-size: 1.5rem;
             cursor: pointer;
-            background-color: #d97d5d; /* Your theme color */
+            background-color: #d97d5d;
             color: white;
             border: none;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
             transition: background-color 0.3s, transform 0.2s;
         }
-        #startButton:hover {
+        #launchButton:hover {
             background-color: #b8654b;
             transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
-    <button id="startButton">Launch & Cloak</button>
+    <button id="launchButton">Launch Site</button>
 
     <script>
-        document.getElementById('startButton').addEventListener('click', async () => {
-            // 1. Define the URL of your launcher page. Using the absolute URL is most reliable.
-            const launcherUrl = 'https://labl.vercel.app/main.html';
-            
-            // 2. Open the new tab immediately (requires user click)
+        document.getElementById('launchButton').addEventListener('click', async () => {
+            // 1. Open the new tab immediately (requires user click)
             const newTab = window.open('about:blank', '_blank'); 
 
             if (!newTab) {
@@ -49,20 +46,22 @@
             }
 
             try {
-                // 3. Fetch the content of the main launcher file using the absolute URL
-                const response = await fetch(launcherUrl);
+                // 2. FETCH the content of the main launcher file. NO HTML IN THIS LINE.
+                // Using a relative path ('main.html') is best if both files are in the root.
+                const response = await fetch('main.html');
                 
                 if (!response.ok) {
-                    throw new Error(`Failed to fetch main.html from ${launcherUrl}: ${response.status}`);
+                    throw new Error(`Failed to fetch main.html: ${response.status}`);
                 }
                 
+                // 3. Get the HTML content as a string
                 const htmlContent = await response.text();
 
-                // 4. Write the content into the blank tab
+                // 4. Write the fetched HTML content into the blank tab
                 newTab.document.write(htmlContent);
                 newTab.document.close();
                 
-                // 5. Redirect the original (index.html) tab to a safe page (Google)
+                // 5. Redirect the original (index.html) tab to Google
                 window.location.replace('https://www.google.com'); 
 
             } catch (error) {
