@@ -37,7 +37,10 @@
 
     <script>
         document.getElementById('startButton').addEventListener('click', async () => {
-            // 1. Open the new tab immediately (requires user click)
+            // 1. Define the URL of your launcher page. Using the absolute URL is most reliable.
+            const launcherUrl = 'https://labl.vercel.app/main.html';
+            
+            // 2. Open the new tab immediately (requires user click)
             const newTab = window.open('about:blank', '_blank'); 
 
             if (!newTab) {
@@ -46,20 +49,20 @@
             }
 
             try {
-                // 2. Fetch the content of the main launcher file
-                const response = await fetch('main.html');
+                // 3. Fetch the content of the main launcher file using the absolute URL
+                const response = await fetch(launcherUrl);
                 
                 if (!response.ok) {
-                    throw new Error(\`Failed to fetch main.html: \${response.status}\`);
+                    throw new Error(`Failed to fetch main.html from ${launcherUrl}: ${response.status}`);
                 }
                 
                 const htmlContent = await response.text();
 
-                // 3. Write the content into the blank tab
+                // 4. Write the content into the blank tab
                 newTab.document.write(htmlContent);
                 newTab.document.close();
                 
-                // 4. Redirect the original (index.html) tab to Google
+                // 5. Redirect the original (index.html) tab to a safe page (Google)
                 window.location.replace('https://www.google.com'); 
 
             } catch (error) {
