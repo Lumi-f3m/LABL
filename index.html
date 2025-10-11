@@ -19,7 +19,7 @@
             padding: 20px 40px;
             font-size: 1.5rem;
             cursor: pointer;
-            background-color: #d97d5d; 
+            background-color: #d97d5d; /* Your theme color */
             color: white;
             border: none;
             border-radius: 10px;
@@ -36,335 +36,38 @@
     <button id="startButton">Launch & Cloak</button>
 
     <script>
-        // --- LAUNCHER CODE STORED AS A JAVASCRIPT STRING ---
-        // This entire string contains all the HTML, CSS, and JS for your full launcher!
-        const launcherHTML = `
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>LABL</title>
-                <style>
-                    /* All your original CSS goes here */
-                    :root {
-                        --cat-dark-brown: #33241c;
-                        --cat-tan: #73594b;
-                        --cat-cream: #c4a991;
-                        --cat-orange: #d97d5d;
-                        --cat-white: #f5f5f5;
-                        --container-bg-color: rgba(51, 36, 28, 0.9);
-                        --text-color: var(--cat-white);
-                        --input-bg-color: rgba(255, 255, 255, 0.1);
-                        --input-border-color: rgba(255, 255, 255, 0.2);
-                        --input-focus-glow: var(--cat-orange);
-                        --button-primary-bg: var(--cat-orange);
-                        --button-primary-hover: #b8654b;
-                        --button-secondary-bg: var(--cat-tan);
-                        --button-secondary-hover: #634d40;
-                        --button-text-color: var(--text-color);
-                        --button-shadow-color: rgba(0, 0, 0, 0.4);
-                        --border-light: rgba(255, 255, 255, 0.2);
-                    }
-
-                    *, *::before, *::after {
-                        box-sizing: border-box;
-                        margin: 0;
-                        padding: 0;
-                    }
-
-                    body {
-                        font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        min-height: 100vh;
-                        color: var(--text-color);
-                        background-color: var(--cat-dark-brown);
-                        padding: 2rem 0;
-                        overflow-x: hidden;
-                    }
-
-                    /* Main Container */
-                    .container {
-                        text-align: center;
-                        padding: 3rem 4rem;
-                        background-color: var(--container-bg-color);
-                        border-radius: 15px;
-                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-                        transition: transform 0.3s ease;
-                        max-width: 650px;
-                        width: 90%;
-                        border: 1px solid var(--border-light);
-                        backdrop-filter: blur(8px);
-                        display: flex;
-                        flex-direction: column;
-                        gap: 1.8rem;
-                    }
-
-                    .container:hover {
-                        transform: translateY(-5px);
-                    }
-
-                    h1 {
-                        font-size: 2.5rem;
-                        font-weight: 700;
-                        margin-bottom: 2rem;
-                        color: var(--cat-white);
-                        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-                    }
-
-                    label {
-                        display: block;
-                        font-size: 1.1rem;
-                        color: var(--cat-cream);
-                        font-weight: 500;
-                        margin-bottom: 0.8rem;
-                    }
-
-                    /* Input Field */
-                    input[type="text"] {
-                        padding: 15px 20px;
-                        border: 1px solid var(--input-border-color);
-                        border-radius: 8px;
-                        width: 100%;
-                        background-color: var(--input-bg-color);
-                        color: var(--cat-white);
-                        font-size: 1rem;
-                        transition: border-color 0.3s, box-shadow 0.3s;
-                        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
-                    }
-
-                    input[type="text"]:focus {
-                        outline: none;
-                        border-color: var(--input-focus-glow);
-                        box-shadow: 0 0 0 3px rgba(217, 125, 93, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.2);
-                    }
-
-                    .main-controls {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 1.5rem;
-                        margin-bottom: 1.5rem;
-                    }
-
-                    /* Main Launch Button Styling */
-                    #launchButton {
-                        padding: 16px 35px;
-                        background-color: var(--button-primary-bg);
-                        color: var(--button-text-color);
-                        border: none;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.3s;
-                        font-weight: 600;
-                        font-size: 1.1rem;
-                        letter-spacing: 0.05em;
-                        box-shadow: 0 6px 20px var(--button-shadow-color);
-                        text-transform: uppercase;
-                    }
-
-                    #launchButton:hover {
-                        background-color: var(--button-primary-hover);
-                        transform: translateY(-3px);
-                        box-shadow: 0 8px 25px var(--button-shadow-color);
-                    }
-
-                    #launchButton:active {
-                        transform: translateY(0);
-                        box-shadow: 0 4px 15px var(--button-shadow-color);
-                    }
-                    
-                    /* Quick Links Section */
-                    .quick-links-section {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 1rem;
-                        padding-top: 1.5rem;
-                        border-top: 1px solid var(--border-light);
-                    }
-
-                    .quick-links-title {
-                        font-size: 1.3rem;
-                        font-weight: 600;
-                        color: var(--cat-cream);
-                        margin-bottom: 0.5rem;
-                    }
-
-                    .quick-links-grid {
-                        display: grid;
-                        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-                        gap: 0.8rem;
-                        justify-items: center;
-                    }
-
-                    .quick-link-button {
-                        width: 100%;
-                        padding: 12px 15px;
-                        background-color: var(--button-secondary-bg);
-                        color: var(--button-text-color);
-                        border: 1px solid var(--border-light);
-                        border-radius: 6px;
-                        cursor: pointer;
-                        font-size: 0.9rem;
-                        font-weight: 500;
-                        transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s, color 0.2s;
-                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-                        text-transform: none;
-                    }
-
-                    .quick-link-button:hover {
-                        background-color: var(--button-secondary-hover);
-                        color: var(--cat-white);
-                        transform: translateY(-2px);
-                        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-                    }
-
-                    .quick-link-button:active {
-                        transform: translateY(0);
-                        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-                    }
-
-                    @media (max-width: 600px) {
-                        .container {
-                            padding: 2.5rem 1.5rem;
-                            gap: 1.5rem;
-                        }
-                        h1 {
-                            font-size: 2rem;
-                        }
-                        input[type="text"] {
-                            width: 100%;
-                            max-width: 100%;
-                            padding: 12px 15px;
-                        }
-                        #launchButton {
-                            padding: 14px 25px;
-                            font-size: 1rem;
-                        }
-                        .quick-links-grid {
-                            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-                            gap: 0.5rem;
-                        }
-                        .quick-link-button {
-                            font-size: 0.85rem;
-                            padding: 8px 10px;
-                        }
-                    }
-                </style>
-            </head>
-            <body>
-                <main class="container">
-                    <h1>Lumi's ab launcher</h1>
-                    <div class="main-controls">
-                        <label for="urlInput">Enter URL:</label>
-                        <input type="text" id="urlInput" placeholder="https://example.com">
-                        <button id="launchButton">Launch Site</button>
-                    </div>
-
-                    <section class="quick-links-section">
-                        <h2 class="quick-links-title">Quick Links</h2>
-                        <div class="quick-links-grid">
-                            <button class="quick-link-button" onclick="launchURL('https://drive.google.com.fpr.net/')">RammerHead 1</button>
-                            <button class="quick-link-button" onclick="launchURL('https://hsym1.lesuspect.com/')">RammerHead 2</button>
-                            <button class="quick-link-button" onclick="launchURL('https://rammerhead.is-confirmed.gay/')">RammerHead 3</button>
-                            <button class="quick-link-button" onclick="launchURL('https://drive.google.fpr.net/')">RammerHead 4</button>
-                            <button class="quick-link-button" onclick="launchURL('https://sleep.phonk.toilets.tk/')">RammerHead 5</button>
-                            <button class="quick-link-button" onclick="launchURL('https://tc44.smelly.cc/')">RammerHead 6</button>
-                            <button class="quick-link-button" onclick="launchURL('https://qyutxwivpd.thesqueakandoilchart.com/')">VaporV3 1</button>
-                            <button class="quick-link-button" onclick="launchURL('https://classroom.google.com.alcrb.ru')">VaporV3 2</button>
-                            <button class="quick-link-button" onclick="launchURL('https://higuysbikuist.vercel.app')">Bikuist Hub</button>
-                            <button class="quick-link-button" onclick="launchURL('https://fheuwifuhewi.coolscience.cfd/')">Truffed 1</button>
-                            <button class="quick-link-button" onclick="launchURL('https://otherthings.coolscience.cfd/')">Truffed 2</button>
-                            <button class="quick-link-button" onclick="launchURL('https://jicwnew.coolscience.cfd/')">Truffed 3</button>
-                            <button class="quick-link-button" onclick="launchURL('https://fejijfsk.coolscience.cfd/')">Truffed 4</button>
-                            <button class="quick-link-button" onclick="launchURL('https://schoology.com.de/')">Truffed 5</button>
-                            <button class="quick-link-button" onclick="launchURL('https://npm.lat/')">Truffed 6</button>
-                            <button class="quick-link-button" onclick="launchURL('https://isuckdih.w3spaces.com/')">Doge Unb 1</button>
-                            <button class="quick-link-button" onclick="launchURL('https://jakolbeesaidthenwordagain.vercel.app/')">Doge Unb 2</button>
-                        </div>
-                    </section>
-                </main>
-
-                <script>
-                    const urlInput = document.getElementById('urlInput');
-                    const launchButton = document.getElementById('launchButton');
-
-                    function launchURL(url) {
-                        if (!url) {
-                            alert('Please enter a URL or select a quick link.');
-                            return;
-                        }
-                        
-                        const newTab = window.open('about:blank', '_blank');
-                        if (newTab) {
-                            newTab.document.title = 'secret :3';
-                            newTab.document.write(\`
-                                <!DOCTYPE html>
-                                <html lang="en">
-                                <head>
-                                    <title>secret :3</title>
-                                    <meta charset="UTF-8">
-                                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                                    <style>
-                                        body { margin: 0; overflow: hidden; }
-                                        iframe {
-                                            position: fixed;
-                                            top: 0;
-                                            left: 0;
-                                            width: 100%;
-                                            height: 100%;
-                                            border: none;
-                                            display: block;
-                                        }
-                                    </style>
-                                </head>
-                                <body>
-                                    <iframe src="${url}"></iframe>
-                                </body>
-                                </html>
-                            \`);
-                            newTab.document.close();
-                        } else {
-                            alert('Please allow pop-ups for this site to launch new tabs.');
-                        }
-                    }
-
-                    launchButton.addEventListener('click', () => {
-                        const url = urlInput.value.trim();
-                        const formattedUrl = url.startsWith('http://') || url.startsWith('https://') ? url : \`https://\${url}\`;
-                        launchURL(formattedUrl);
-                    });
-
-                    urlInput.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') {
-                            const url = urlInput.value.trim();
-                            const formattedUrl = url.startsWith('http://') || url.startsWith('https://') ? url : \`https://\${url}\`;
-                            launchURL(formattedUrl);
-                        }
-                    });
-                </script>
-            </body>
-            </html>
-        `;
-        // --- END OF LAUNCHER CODE STRING ---
-
-        // --- MAIN LAUNCHER LOGIC ---
-        document.getElementById('startButton').addEventListener('click', () => {
+        document.getElementById('startButton').addEventListener('click', async () => {
+            // 1. Open the new tab immediately (requires user click)
             const newTab = window.open('about:blank', '_blank'); 
 
-            if (newTab) {
-                // 1. Write the massive launcher HTML string into the new blank tab
-                newTab.document.write(launcherHTML);
+            if (!newTab) {
+                alert('Pop-up blocked! Please allow pop-ups for this site to work.');
+                return;
+            }
+
+            try {
+                // 2. Fetch the content of the main launcher file
+                const response = await fetch('main.html');
+                
+                if (!response.ok) {
+                    throw new Error(\`Failed to fetch main.html: \${response.status}\`);
+                }
+                
+                const htmlContent = await response.text();
+
+                // 3. Write the content into the blank tab
+                newTab.document.write(htmlContent);
                 newTab.document.close();
                 
-                // 2. Redirect the original (this) tab to Google
+                // 4. Redirect the original (index.html) tab to Google
                 window.location.replace('https://www.google.com'); 
-            } else {
-                alert('Pop-up blocked! Please allow pop-ups for this site to work.');
+
+            } catch (error) {
+                console.error('Launch Error:', error);
+                alert('Could not load the launcher content. Check the console for details.');
+                newTab.close(); // Close the blank tab if load fails
             }
         });
-        // --- END MAIN LAUNCHER LOGIC ---
     </script>
 </body>
 </html>
