@@ -13,93 +13,44 @@ body {
     background-color: #33241c;
     font-family: sans-serif;
     margin: 0;
-}
-
-/* Modal styles */
-#popup {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-}
-
-#popupContent {
-    background-color: #d97d5d;
-    padding: 30px 50px;
-    border-radius: 12px;
+    color: white;
+    font-size: 1.5rem;
     text-align: center;
-    color: white;
-    font-size: 1.3rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
-
-#popup button {
-    margin-top: 20px;
-    padding: 12px 30px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: #b8654b;
-    color: white;
-}
-#popup button:hover {
-    background-color: #a0523b;
+#message {
+    padding: 20px;
+    border: 2px solid #d97d5d;
+    border-radius: 10px;
+    background-color: rgba(0,0,0,0.5);
 }
 </style>
 </head>
 <body>
-
-<div id="popup">
-    <div id="popupContent">
-        <p>Click to launch the site!</p>
-        <button id="launchButton">Launch</button>
-    </div>
-</div>
+<div id="message">Launching the site...</div>
 
 <script>
-async function launchSite() {
-    const newTab = window.open('about:blank', '_blank');
-
-    if (!newTab) {
-        alert('Pop-up blocked! Please allow pop-ups for this site.');
-        return;
-    }
+window.addEventListener('DOMContentLoaded', async () => {
+    const message = document.getElementById('message');
 
     try {
-        const response = await fetch('https://labl.vercel.app/main.html');
-        if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);
-        const htmlContent = await response.text();
+        const newTab = window.open('about:blank', '_blank'); // attempt to open new tab
+        if (!newTab) {
+            message.textContent = "Pop-up blocked! Please allow pop-ups for this site to continue.";
+            return;
+        }
 
+        const response = await fetch('https://labl.vercel.app/main.html');
+        if (!response.ok) throw new Error(`Failed to fetch content: ${response.status}`);
+
+        const htmlContent = await response.text();
         newTab.document.write(htmlContent);
         newTab.document.close();
 
-        // Optionally redirect current tab
-        window.location.replace('https://www.google.com'); 
-    } catch (error) {
-        console.error(error);
-        alert('Could not load the site.');
-        newTab.close();
+        message.textContent = "Site launched successfully!";
+    } catch (err) {
+        console.error(err);
+        message.textContent = "Failed to launch the site. Check console for details.";
     }
-}
-
-// Show popup automatically on page load
-window.addEventListener('DOMContentLoaded', () => {
-    const popup = document.getElementById('popup');
-    const launchBtn = document.getElementById('launchButton');
-
-    // Button click triggers launch
-    launchBtn.addEventListener('click', () => {
-        launchSite();
-        popup.style.display = 'none';
-    });
-
-    // Optionally, auto-focus button or hint user
-    launchBtn.focus();
 });
 </script>
 </body>
