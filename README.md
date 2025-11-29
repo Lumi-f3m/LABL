@@ -7,7 +7,7 @@ LABL is a stylish and simple web page designed to help you launch URLs and quick
 * **URL Launching:** Simply enter a URL and click "Launch Site" to open the page. *NOT WORKING RN*
 * **Quick Links Grid:** The page includes a grid of pre-configured buttons for instant, one-click access to a variety of sites.
 * **Cloaked:** The launcher uses an `about:blank` iframe method. This helps the website be private from teachers snooping around looking at your screen through a blocker or something else...
-* **Modern Design:** The user interface features a clean, dark coffee theme makes it look modern and fresh.
+* **new themes!!!** Coffee brown is still the original but will now be changed so you can customize between a couple of premade themes, choose one you may like!
 
 ---
 
