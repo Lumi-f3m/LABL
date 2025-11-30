@@ -1,0 +1,621 @@
+/* =================================================== */
+/* === BASE COLOR VARIABLES (Default: Dark Mode) === */
+/* =================================================== */
+:root {
+    /* Color Palette - Defaulting to Dark Mode */
+    --bg-color: #121212;
+    --container-bg: rgba(30, 30, 30, 0.95);
+    --header-bg: #212121;
+    --text-color: #e0e0e0;
+    --secondary-text-color: #a0a0a0; /* Used for Particle color/lines */
+    --button-color: #BB86FC; 
+    --button-hover: #3700B3;
+    --tab-color: #424242;
+    --tab-hover: #505050;
+    --border-color: rgba(255, 255, 255, 0.15);
+    --shadow-color: rgba(0, 0, 0, 0.8);
+    --ab-button-color: #BB86FC;
+    --ab-button-hover: #ffffff;
+
+    /* LABL Colors (integrated into main palette) */
+    --cat-dark-brown: #212121;
+    --cat-medium-brown: #424242;
+    --cat-light-tan: #a0a0a0;
+    --cat-creamy-white: #e0e0e0;
+    --cat-warm-highlight: #BB86FC;
+
+    --labl-container-bg: rgba(24, 24, 24, 0.9);
+    --labl-input-bg: rgba(255, 255, 255, 0.1);
+    --labl-input-border: rgba(255, 255, 255, 0.3);
+    --labl-input-focus: #BB86FC;
+    --labl-button-primary-bg: #BB86FC;
+    --labl-button-primary-hover: #9c5cff;
+    --labl-button-secondary-bg: #424242;
+    --labl-button-secondary-hover: #505050;
+    --labl-button-text-color: #000000;
+    --labl-button-shadow: rgba(0, 0, 0, 0.5);
+    --labl-border-light: rgba(255, 255, 255, 0.3);
+}
+
+body {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* This uses the dark mode default */
+    background-color: var(--bg-color) !important; 
+    z-index: -1;
+}
+
+/* Ensure the canvas element inside is transparent so the main div color shows through */
+#particle-canvas canvas {
+    background-color: transparent !important;
+}
+
+.chat-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px;
+    height: 600px;
+    background: var(--container-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 25px var(--shadow-color);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    z-index: 99999;
+    resize: both;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    color: var(--text-color);
+    transition: all 0.3s ease-in-out; 
+}
+
+/* Mobile Adjustments */
+@media (max-width: 1000px) {
+    .chat-container {
+        width: 95vw;
+        height: 95vh;
+    }
+}
+
+.chat-header {
+    background: var(--header-bg);
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    cursor: grab;
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 12px 12px 0 0;
+    height: 50px;
+}
+
+.tab-container {
+    display: flex;
+    gap: 2px;
+}
+
+.tab-button {
+    background-color: var(--tab-color);
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    color: var(--secondary-text-color);
+    transition: background-color 0.2s ease, color 0.2s ease;
+    outline: none;
+    border-radius: 6px 6px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab-button:hover {
+    background-color: var(--tab-hover);
+}
+
+.tab-button.active {
+    background-color: var(--container-bg);
+    color: var(--text-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+/* Styling for the nested AB Cloak button */
+.tab-button .ab-cloak-button {
+    padding: 4px 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--ab-button-color);
+    color: var(--header-bg);
+    font-size: 12px;
+    font-weight: bold;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.tab-button .ab-cloak-button:hover {
+    background-color: var(--ab-button-hover);
+    color: var(--header-bg);
+}
+
+.tab-button.active .ab-cloak-button {
+    background-color: var(--ab-button-hover);
+    color: var(--header-bg);
+}
+
+.tab-button.active .ab-cloak-button:hover {
+    background-color: var(--button-hover);
+    color: white;
+}
+
+/* Close Button and Reset Button */
+.control-buttons {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.close-button, .reset-button {
+    background: transparent;
+    color: var(--text-color);
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    padding: 0;
+}
+
+.close-button:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+.reset-button {
+    font-size: 16px;
+    width: auto;
+    border-radius: 8px;
+    padding: 0 10px;
+    background: var(--button-color); 
+}
+
+.reset-button:hover {
+    background: var(--button-hover);
+    color: white;
+}
+
+.content-iframe {
+    flex-grow: 1;
+    border: none;
+    width: 100%;
+    height: 100%;
+    background-color: var(--container-bg); 
+}
+
+.content-panel {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: var(--container-bg);
+    overflow-y: auto;
+}
+
+/* About Page Styles */
+.about-page h3 {
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+.about-page p, .about-page li {
+    font-size: 15px;
+    color: var(--secondary-text-color);
+}
+
+/* Tools Page Styles */
+.tools-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.tools-section label {
+    font-size: 15px;
+    color: var(--secondary-text-color);
+}
+.tools-section h3 {
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+.tools-section input[type="checkbox"] {
+    margin-right: 5px;
+}
+.tools-section textarea {
+    width: 100%;
+    height: 100px;
+    resize: vertical;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 10px;
+    font-family: 'monospace';
+    box-sizing: border-box;
+    background: var(--header-bg);
+    color: var(--text-color);
+}
+.tools-section button {
+    padding: 10px 18px;
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-weight: bold;
+}
+.tools-section button:hover {
+    background-color: var(--button-hover);
+}
+.tools-section pre {
+    background: var(--header-bg);
+    padding: 12px;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 14px;
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+}
+
+/* AB Cloak Launcher Panel - Custom Styling (Uses LABL vars) */
+.ab-cloak-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 4rem;
+    background-color: var(--labl-container-bg);
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+}
+.ab-cloak-page h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--cat-creamy-white);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2rem;
+}
+.ab-cloak-page .main-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+.ab-cloak-page label {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--cat-light-tan);
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+}
+.ab-cloak-page input[type="text"] {
+    padding: 15px 20px;
+    border: 1px solid var(--labl-input-border);
+    border-radius: 8px;
+    width: 100%;
+    background-color: var(--labl-input-bg);
+    color: var(--cat-creamy-white);
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+}
+.ab-cloak-page input[type="text"]:focus {
+    outline: none;
+    border-color: var(--labl-input-focus);
+    box-shadow: 0 0 0 3px rgba(187, 134, 252, 0.5), inset 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.ab-cloak-page #launchButton {
+    padding: 16px 35px;
+    background-color: var(--labl-button-primary-bg);
+    color: var(--labl-button-text-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s, box-shadow 0.3s;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    box-shadow: 0 6px 20px var(--labl-button-shadow);
+    text-transform: uppercase;
+}
+.ab-cloak-page #launchButton:hover {
+    background-color: var(--labl-button-primary-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px var(--labl-button-shadow);
+}
+.ab-cloak-page #launchButton:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px var(--labl-button-shadow);
+}
+.ab-cloak-page .quick-links-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--labl-border-light);
+    width: 100%;
+}
+.ab-cloak-page .quick-links-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--cat-light-tan);
+    margin-bottom: 0.5rem;
+}
+.ab-cloak-page .quick-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.8rem;
+    justify-items: center;
+}
+.ab-cloak-page .quick-link-button {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: var(--labl-button-secondary-bg);
+    color: var(--labl-button-text-color);
+    border: 1px solid var(--labl-border-light);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s, color 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    text-transform: none;
+}
+.ab-cloak-page .quick-link-button:hover {
+    background-color: var(--labl-button-secondary-hover);
+    color: var(--cat-creamy-white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+.ab-cloak-page .quick-link-button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* =================================================== */
+/* === THEME PAGE STYLING (Theme Selector Panel) === */
+/* =================================================== */
+.theme-page {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+}
+
+.theme-page h3 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    text-shadow: 0 1px 3px var(--shadow-color);
+}
+
+.theme-page p {
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+    color: var(--secondary-text-color);
+}
+
+.theme-selector-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 40px;
+    width: 90%;
+    max-width: 400px;
+}
+
+.theme-selector-group label {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    font-weight: 600;
+    text-align: left;
+    margin-left: 5px;
+}
+
+.theme-page select {
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+    background-color: var(--header-bg);
+    color: var(--text-color);
+    font-size: 1rem;
+    appearance: none;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.theme-page select:focus {
+    outline: none;
+    border-color: var(--button-color);
+    box-shadow: 0 0 0 3px rgba(187, 134, 252, 0.3);
+}
+
+.theme-page #saveThemeButton {
+    padding: 15px 30px;
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 700;
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 6px 15px var(--shadow-color);
+    text-transform: uppercase;
+}
+
+.theme-page #saveThemeButton:hover {
+    background-color: var(--button-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px var(--shadow-color);
+}
+.theme-page #saveThemeButton:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+/* =================================================== */
+/* === THEME VARIABLE OVERRIDES (Apply new palette) === */
+/* =================================================== */
+
+/* --- Deep Blue Theme (.theme-blue) --- */
+.chat-container.theme-blue {
+    --bg-color: #031c3c;
+    --container-bg: rgba(16, 47, 79, 0.9);
+    --header-bg: #092a50;
+    --text-color: #e3f2fd;
+    --secondary-text-color: #a9c1e0;
+    --button-color: #4a90e2;
+    --button-hover: #357bd1;
+    --tab-color: #2e4d73;
+    --tab-hover: #3c5e89;
+    --border-color: rgba(255, 255, 255, 0.2);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --ab-button-color: #81c2f7;
+    --ab-button-hover: #ffffff;
+
+    /* LABL Panel Overrides */
+    --cat-creamy-white: #e3f2fd;
+    --cat-light-tan: #a9c1e0;
+    --labl-container-bg: rgba(10, 35, 60, 0.85);
+    --labl-input-bg: rgba(255, 255, 255, 0.15);
+    --labl-input-border: rgba(255, 255, 255, 0.25);
+    --labl-input-focus: #81c2f7;
+    --labl-button-primary-bg: #4a90e2;
+    --labl-button-primary-hover: #357bd1;
+    --labl-button-secondary-bg: #2e4d73;
+    --labl-button-secondary-hover: #3c5e89;
+    --labl-button-text-color: #ffffff;
+    --labl-border-light: rgba(255, 255, 255, 0.25);
+}
+
+/* --- Forest Green Theme (.theme-green) --- */
+.chat-container.theme-green {
+    --bg-color: #1f3a1f;
+    --container-bg: rgba(43, 71, 43, 0.9);
+    --header-bg: #294d29;
+    --text-color: #e6ffe6;
+    --secondary-text-color: #a8cfa8;
+    --button-color: #6aa84f;
+    --button-hover: #5a943f;
+    --tab-color: #3f6b3f;
+    --tab-hover: #4d7a4d;
+    --border-color: rgba(255, 255, 255, 0.18);
+    --shadow-color: rgba(0, 0, 0, 0.4);
+    --ab-button-color: #90c283;
+    --ab-button-hover: #ffffff;
+
+    /* LABL Panel Overrides */
+    --cat-creamy-white: #e6ffe6;
+    --cat-light-tan: #a8cfa8;
+    --labl-container-bg: rgba(30, 50, 30, 0.85);
+    --labl-input-bg: rgba(255, 255, 255, 0.1);
+    --labl-input-border: rgba(255, 255, 255, 0.2);
+    --labl-input-focus: #90c283;
+    --labl-button-primary-bg: #6aa84f;
+    --labl-button-primary-hover: #5a943f;
+    --labl-button-secondary-bg: #3f6b3f;
+    --labl-button-secondary-hover: #4d7a4d;
+    --labl-button-text-color: #ffffff;
+    --labl-border-light: rgba(255, 255, 255, 0.2);
+}
+
+/* --- NEW: Crimson Red Theme (.theme-red) --- */
+.chat-container.theme-red {
+    --bg-color: #4d0000;
+    --container-bg: rgba(77, 26, 26, 0.9);
+    --header-bg: #660000;
+    --text-color: #ffe6e6;
+    --secondary-text-color: #ffb3b3; /* Light red for particles */
+    --button-color: #e60000;
+    --button-hover: #cc0000;
+    --tab-color: #330000;
+    --tab-hover: #4d0000;
+    --border-color: rgba(255, 255, 255, 0.15);
+    --shadow-color: rgba(0, 0, 0, 0.7);
+    --ab-button-color: #e60000;
+    --ab-button-hover: #ffcccc;
+
+    /* LABL Panel Overrides */
+    --cat-creamy-white: #ffe6e6;
+    --cat-light-tan: #ffb3b3;
+    --labl-container-bg: rgba(66, 20, 20, 0.85);
+    --labl-input-bg: rgba(255, 255, 255, 0.1);
+    --labl-input-border: rgba(255, 255, 255, 0.2);
+    --labl-input-focus: #ffb3b3;
+    --labl-button-primary-bg: #e60000;
+    --labl-button-primary-hover: #cc0000;
+    --labl-button-secondary-bg: #330000;
+    --labl-button-secondary-hover: #4d0000;
+    --labl-button-text-color: #ffffff;
+    --labl-border-light: rgba(255, 255, 255, 0.2);
+}
+
+/* --- NEW: Vibrant Yellow Theme (.theme-yellow) --- */
+.chat-container.theme-yellow {
+    --bg-color: #4a4200;
+    --container-bg: rgba(74, 66, 0, 0.9);
+    --header-bg: #807300;
+    --text-color: #ffffcc;
+    --secondary-text-color: #ffeb80; /* Light yellow for particles */
+    --button-color: #ffbf00;
+    --button-hover: #e6ac00;
+    --tab-color: #5c5200;
+    --tab-hover: #736700;
+    --border-color: rgba(255, 255, 255, 0.2);
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    --ab-button-color: #ffbf00;
+    --ab-button-hover: #ffffff;
+
+    /* LABL Panel Overrides */
+    --cat-creamy-white: #ffffcc;
+    --cat-light-tan: #ffeb80;
+    --labl-container-bg: rgba(60, 53, 0, 0.85);
+    --labl-input-bg: rgba(255, 255, 255, 0.1);
+    --labl-input-border: rgba(255, 255, 255, 0.3);
+    --labl-input-focus: #ffeb80;
+    --labl-button-primary-bg: #ffbf00;
+    --labl-button-primary-hover: #e6ac00;
+    --labl-button-secondary-bg: #5c5200;
+    --labl-button-secondary-hover: #736700;
+    --labl-button-text-color: #111111;
+    --labl-border-light: rgba(255, 255, 255, 0.3);
+}
+
+/* Reset button hover for default dark mode */
+.chat-container .reset-button:hover {
+        color: #BB86FC;
+}
+.chat-container .close-button:hover {
+        background: #cf6679;
+}
