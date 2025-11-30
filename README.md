@@ -1,6 +1,7 @@
 # LABL
 
 LABL is a website that can be used to bypass your school's blocker (Now Bypassing Bypassi)
+**BYOD COMING SOON 👀**
 
 ## ✨ Features
 
