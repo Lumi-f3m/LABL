@@ -1,33 +1,37 @@
 # LABL
 
-LABL is a stylish and simple web page designed to help you launch URLs and quickly access your favorite sites :D
+LABL is a website that can be used to bypass your school's blocker (Now Bypassing Bypassi)
 
 ## ✨ Features
 
-* **URL Launching:** Simply enter a URL and click "Launch Site" to open the page. *NOT WORKING RN*
-* **Quick Links Grid:** The page includes a grid of pre-configured buttons for instant, one-click access to a variety of sites.
-* **Cloaked:** The launcher uses an `about:blank` iframe method. This helps the website be private from teachers snooping around looking at your screen through a blocker or something else...
-* **new themes!!!** Coffee brown is still the original but will now be changed so you can customize between a couple of premade themes, choose one you may like!
+* **JavaScript Executor:**  A Simple JavaScript executor if you would like to control
+* **Ab Launcher** The launcher uses an `about:blank` iframe method. This helps the website be private from teachers snooping around, looking at your screen through a blocker or something else..
+* **new themes!!!** Dark mode is now the original. Now we will have many colors to choose from, choose one you may like!
 
 ---
 
-## 🚀 How to Use
+## 🚀 Open Unblocked
 
 The entire launcher is contained in a single HTML file, making it easy to use and deploy.
 
 ### **Method 1: Local Use**
 
-1.  Save the file named `main.html` or copy the code.
-2.  Open the `main.html` file, or if you copy the code, paste it in a html preview site.
+1.  Download the whole file and put it in a folder (named anything)
+2.  Open the index.html (and click the clever badge) or open the main.html file
 
-### **Method 2: Deployment (For School Networks)**
+### **Method 2: Deployment (For a website version)**
 
-To make the launcher accessible on a restricted network, you'll need to host it on a service that isn't blocked. We recommend using a free hosting service like **Vercel** or **Netlify**.
+If Method one is blocked for you, you can use either **Vercel** or **Netlify**.
 
+### Netlify
 1.  **Go to Netlify:** Visit the Netlify website and create a free account.
-2.  **Drag and Drop:** On your Netlify dashboard, simply drag and drop your `main.html` file into the designated area.
+2.  **Drag and Drop:** On your Netlify dashboard, simply drag and drop your files into the designated area.
 3.  **Get Your URL:** Netlify will automatically deploy your site and provide a unique URL (e.g., `random-name.netlify.app`), which is often unblocked by school filters.
 
+### Vercel
+1. **Fork this Repository** Go to this GitHub repo and fork it to your account.
+2. **Deploy** Sign In/Up and add a new GitHub repo and deploy.
+3. **Get your URL** Get your url (e.g., `labl.vercel.app`)
 ---
 
 ## ⚙️ Customization
