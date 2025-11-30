@@ -1,5 +1,5 @@
 # LABL
-###  **BYOD COMING SOON 👀**
+###  **BYOD COMING SOON 👀** - cwqwe
 LABL is a website that can be used to bypass your school's blocker (Now Bypassing Bypassi)
 
 ## ✨ Features
@@ -33,16 +33,3 @@ If Method one is blocked for you, you can use either **Vercel** or **Netlify**.
 2. **Deploy** Sign In/Up and add a new GitHub repo and deploy.
 3. **Get your URL** Get your url (e.g., `labl.vercel.app`)
 ---
-
-## ⚙️ Customization
-
-You can easily personalize the launcher by editing the `main.html` file.
-
-* **Change Quick Links:** To add, remove, or modify the quick links, simply edit the `<button>` tags within the `<div class="quick-links-grid">` section. Update the button text and the URL inside the `onclick` attribute.
-
-    ```html
-    <button class="quick-link-button" onclick="launchURL('[https://newsite.com/](https://newsite.com/)')">New Site Name</button>
-    ```
-
-* **Change Title:** The main title is "Lumi's ab launcher". You can change this by editing the `<h1>` tag.
-* **Adjust Styling:** The visual design is controlled by **CSS variables** at the top of the `<style>` block. You can easily change colors to match your taste.
