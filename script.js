@@ -261,7 +261,7 @@ function createChatGPTpopup() {
             <h2 class="quick-links-title">Quick Links</h2>
             <div class="quick-links-grid">
                 <button class="quick-link-button" data-url="https://genizy-math.vercel.app/">GN-Math 1</button>
-                <button class="quick-link-button" data-url="https://schoolworkandstuff/">GN-Math 2</button>
+                <button class="quick-link-button" data-url="https://schoolworkandstuff.vercel.app/">GN-Math 2</button>
                 <button class="quick-link-button" data-url="https://tc44.smelly.cc/">RammerHead</button>
                 <button class="quick-link-button" data-url="https://soggycake.verymad.net/">RammerHead</button>
                 <button class="quick-link-button" data-url="https://fheuwifuhewi.coolscience.cfd/">Truffed</button>
