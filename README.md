@@ -1,5 +1,5 @@
 # LABL
-###  **BYOD COMING SOON 👀** - cwqwe
+###  New pass is cwqwe.lumi - LumLum
 LABL is a website that can be used to bypass your school's blocker (Now Bypassing Bypassi)
 
 ## ✨ Features
