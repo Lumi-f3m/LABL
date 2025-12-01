@@ -1,5 +1,5 @@
 # LABL
-###  New pass is cwqwe.lumi - LumLum
+###  New pass is cwqwe.lumi 
 LABL is a website that can be used to bypass your school's blocker (Now Bypassing Bypassi)
 
 ## ✨ Features
